@@ -25,7 +25,7 @@ const Chatbot = () => {
 
     return (
         <>
-
+            {/* Chatbot Trigger Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="fixed bottom-4 right-4 bg-gradient-to-r from-blue-600 to-blue-900 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-transform transform hover:scale-110 focus:outline-none z-50"
@@ -33,10 +33,12 @@ const Chatbot = () => {
                 {isOpen ? <AiOutlineClose size={24} /> : <AiOutlineRobot size={24} />}
             </button>
 
-
+            {/* Chatbot Popup */}
             {isOpen && (
-                <div className="fixed inset-0 bg-white flex flex-col z-50">
-
+                <div
+                    className="fixed inset-0 bg-white flex flex-col z-50 animate-fade-in-down"
+                >
+                    {/* Chatbot Header */}
                     <div className="bg-gradient-to-r from-blue-600 to-blue-900 text-white p-6 flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                             <AiOutlineRobot size={38} />
@@ -50,7 +52,7 @@ const Chatbot = () => {
                         </button>
                     </div>
 
-
+                    {/* Chat Messages */}
                     <div
                         ref={chatContainerRef}
                         className="flex-grow overflow-y-auto p-4 bg-white"
@@ -64,7 +66,7 @@ const Chatbot = () => {
                         ))}
                     </div>
 
-
+                    {/* Input Box */}
                     <InputBox onSendMessage={handleSendMessage} />
                 </div>
             )}

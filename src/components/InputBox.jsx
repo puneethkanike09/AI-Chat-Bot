@@ -20,7 +20,7 @@ const InputBox = ({ onSendMessage }) => {
         >
             <input
                 type="text"
-                className="w-full sm:w-3/4 lg:w-2/3 border border-gray-300 rounded-full px-4 sm:px-6 py-2 sm:py-4 text-sm sm:text-base lg:text-xl focus:outline-none placeholder-gray-400"
+                className="w-full sm:w-3/4 lg:w-2/3 border border-none rounded-full px-4 sm:px-6 py-2 sm:py-4 text-sm sm:text-base lg:text-xl focus:outline-none placeholder-gray-400"
                 placeholder="Type your message here..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}

@@ -5,7 +5,7 @@ const Message = ({ text, sender }) => {
 
     return (
         <div
-            className={`flex ${isBot ? "justify-start" : "justify-end"} mb-4 ml-4 mr-4`}
+            className={`flex ${isBot ? "justify-start" : "justify-end"} mb-4 ml-4 mr-4 `}
         >
             <div
                 className={`px-4 py-3 max-w-[90%] lg:max-w-[75%] text-sm lg:text-lg rounded-lg shadow-md ${isBot

@@ -6,10 +6,10 @@ const Message = ({ text, sender }) => {
     return (
         <div
             className={`flex ${isBot ? "justify-start" : "justify-end"
-                } mb-4`}
+                } mb-4 ml-5 mr-5`}
         >
             <div
-                className={`max-w-xs px-4 py-2 rounded-lg shadow-md ${isBot
+                className={`px-6 py-4 rounded-lg text-xl shadow-md ${isBot
                     ? "bg-blue-900 text-white font-mono "
                     : "bg-gray-200 text-black font-mono "
                     }`}

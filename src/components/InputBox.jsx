@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { IoSend } from "react-icons/io5";
 
 const InputBox = ({ onSendMessage }) => {
     const [input, setInput] = useState("");
@@ -15,11 +16,11 @@ const InputBox = ({ onSendMessage }) => {
     return (
         <form
             onSubmit={handleSend}
-            className="flex items-center bg-gray-100 p-3 border-t rounded-b-lg"
+            className="flex items-center justify-center bg-white p-4 border-t space-x-4"
         >
             <input
                 type="text"
-                className="flex-grow border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-950"
+                className="w-3/4 lg:w-2/3 border rounded-full px-6 py-4 text-lg focus:outline-none  font-mono"
                 placeholder="Type your message..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -27,9 +28,9 @@ const InputBox = ({ onSendMessage }) => {
             />
             <button
                 type="submit"
-                className="ml-2 font-bold font-mono bg-blue-950 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-900"
+                className="p-5 bg-blue-white text-blue-950 rounded-full  transition-all duration-500 flex items-center justify-center"
             >
-                Send
+                <IoSend size={28} />
             </button>
         </form>
     );

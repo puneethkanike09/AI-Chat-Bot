@@ -53,7 +53,7 @@ const Chatbot = () => {
 
                     <div
                         ref={chatContainerRef}
-                        className="flex-grow overflow-y-auto p-4 bg-gray-50"
+                        className="flex-grow overflow-y-auto p-4 bg-white"
                     >
                         {messages.map((message) => (
                             <Message

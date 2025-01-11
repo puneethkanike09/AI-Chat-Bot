@@ -16,7 +16,7 @@ const InputBox = ({ onSendMessage }) => {
     return (
         <form
             onSubmit={handleSend}
-            className="flex items-center justify-center bg-white p-4 space-x-3 sm:space-x-4"
+            className="flex items-center justify-center bg-white p-4 space-x-3 sm:space-x-4 pb-6 lg:pb-12"
         >
             <input
                 type="text"

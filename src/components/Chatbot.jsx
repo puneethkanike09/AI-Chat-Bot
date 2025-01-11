@@ -6,7 +6,7 @@ import InputBox from "./InputBox";
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
+        { id: 1, text: "Hello! How can I assist you today?", sender: "bot", file: "/assets/images/download.png" },
     ]);
     const chatContainerRef = useRef(null);
 
@@ -17,10 +17,26 @@ const Chatbot = () => {
     }, [messages]);
 
     const handleSendMessage = (newMessage) => {
-        setMessages([
-            ...messages,
-            { id: messages.length + 1, text: newMessage, sender: "user" },
-        ]);
+        if (newMessage.file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setMessages([
+                    ...messages,
+                    {
+                        id: messages.length + 1,
+                        text: newMessage.text || "",
+                        file: reader.result,
+                        sender: "user",
+                    },
+                ]);
+            };
+            reader.readAsDataURL(newMessage.file);
+        } else {
+            setMessages([
+                ...messages,
+                { id: messages.length + 1, text: newMessage.text, sender: "user" },
+            ]);
+        }
     };
 
     return (
@@ -35,18 +51,16 @@ const Chatbot = () => {
 
             {/* Chatbot Popup */}
             {isOpen && (
-                <div
-                    className="fixed inset-0 bg-white flex flex-col z-50 animate-fade-in-down"
-                >
+                <div className="fixed inset-0  flex flex-col z-50 animate-fade-in-down shadow-2xl">
                     {/* Chatbot Header */}
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-900 text-white p-6 flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                    <div className=" text-blue-900 p-5 pl-6 md:pl-44 pr-6 md:pr-44 flex items-center justify-between shadow-lg">
+                        <div className="flex items-center space-x-4">
                             <AiOutlineRobot size={38} />
-                            <span className="text-2xl font-semibold">Chatbot</span>
+                            <span className="text-2xl font-bold tracking-wide" text>Muliya</span>
                         </div>
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="text-white hover:text-gray-200 transition"
+                            className="text-blue-900 hover:text-gray-300 transition transform hover:scale-110"
                         >
                             <AiOutlineClose size={30} />
                         </button>
@@ -55,19 +69,22 @@ const Chatbot = () => {
                     {/* Chat Messages */}
                     <div
                         ref={chatContainerRef}
-                        className="flex-grow overflow-y-auto p-4 bg-white"
+                        className="flex-grow overflow-y-auto p-6 bg-white shadow-inner rounded-lg space-y-4"
                     >
                         {messages.map((message) => (
                             <Message
                                 key={message.id}
                                 text={message.text}
                                 sender={message.sender}
+                                file={message.file}
                             />
                         ))}
                     </div>
 
                     {/* Input Box */}
-                    <InputBox onSendMessage={handleSendMessage} />
+                    <div className="bg-gradient-to-r from-gray-50 to-gray-100  shadow-md">
+                        <InputBox onSendMessage={handleSendMessage} />
+                    </div>
                 </div>
             )}
         </>

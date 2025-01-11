@@ -16,21 +16,23 @@ const InputBox = ({ onSendMessage }) => {
     return (
         <form
             onSubmit={handleSend}
-            className="flex items-center justify-center bg-white p-4 border-t space-x-4"
+            className="flex items-center justify-center bg-white p-4 space-x-3 sm:space-x-4"
         >
             <input
                 type="text"
-                className="w-3/4 lg:w-2/3 border rounded-full px-6 py-4 text-lg focus:outline-none  font-mono"
-                placeholder="Type your message..."
+                className="w-full sm:w-3/4 lg:w-2/3 border border-gray-300 rounded-full px-4 sm:px-6 py-2 sm:py-4 text-sm sm:text-base lg:text-xl focus:outline-none placeholder-gray-400"
+                placeholder="Type your message here..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                style={{ wordBreak: "break-word" }}
+                style={{
+                    wordBreak: "break-word",
+                }}
             />
             <button
                 type="submit"
-                className="p-5 bg-blue-white text-blue-950 rounded-full  transition-all duration-500 flex items-center justify-center"
+                className="p-3 sm:p-4 bg-gradient-to-r from-blue-600 to-blue-900 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-all duration-500 hover:scale-105"
             >
-                <IoSend size={28} />
+                <IoSend size={24} />
             </button>
         </form>
     );

@@ -5,13 +5,12 @@ const Message = ({ text, sender }) => {
 
     return (
         <div
-            className={`flex ${isBot ? "justify-start" : "justify-end"
-                } mb-4 ml-5 mr-5`}
+            className={`flex ${isBot ? "justify-start" : "justify-end"} mb-4 ml-4 mr-4`}
         >
             <div
-                className={`px-6 py-4 rounded-lg text-xl shadow-md ${isBot
-                    ? "bg-blue-900 text-white font-mono "
-                    : "bg-gray-200 text-black font-mono "
+                className={`px-4 py-3 max-w-[90%] lg:max-w-[75%] text-sm lg:text-lg rounded-lg shadow-md ${isBot
+                    ? "bg-gradient-to-r from-blue-600 to-blue-800 text-white"
+                    : "bg-gray-200 text-gray-900"
                     }`}
             >
                 {text}
@@ -19,7 +18,6 @@ const Message = ({ text, sender }) => {
         </div>
     );
 };
-
 
 Message.propTypes = {
     text: PropTypes.string.isRequired,

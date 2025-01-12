@@ -3,17 +3,17 @@ import PropTypes from "prop-types";
 import { FiFile } from "react-icons/fi";
 import { IoSend } from "react-icons/io5";
 
-const InputBox = ({ onSendMessage }) => {
+const InputBox = ({ onSendMessage, isDisabled }) => {
     const [input, setInput] = useState("");
     const [file, setFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
+    const sendSound = new Audio('/assets/sounds/send.mp3');
 
     const handleSend = (e) => {
         e.preventDefault();
         if (input.trim() || file) {
-            // Play sound
-            const audio = new Audio('/assets/sounds/send.mp3');
-            audio.play().catch(error => console.log('Error playing sound:', error));
+            // Play send sound
+            sendSound.play().catch(error => console.log('Send sound error:', error));
 
             onSendMessage({ text: input, file });
             setInput("");
@@ -69,9 +69,7 @@ const InputBox = ({ onSendMessage }) => {
                     className="w-full sm:w-3/4 lg:w-2/3 border-2 border-[#ab252c] rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base lg:text-lg focus:outline-none  focus:ring-1 focus:ring-[#ab252c] focus:border-[#ab252c] placeholder:text-[#ab252c]"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    style={{
-                        wordBreak: "break-word",
-                    }}
+                    disabled={isDisabled} // Disable input when processing
                 />
                 <input
                     type="file"
@@ -79,16 +77,18 @@ const InputBox = ({ onSendMessage }) => {
                     onChange={handleFileChange}
                     className="hidden"
                     id="file-upload"
+                    disabled={isDisabled} // Disable file input when processing
                 />
                 <label
                     htmlFor="file-upload"
-                    className="p-3 sm:p-4 bg-[#ab252c] text-white rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-700 transition-all duration-500 transform hover:scale-110"
+                    className={`p-3 sm:p-4 bg-[#ab252c] text-white rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 transform hover:scale-110 ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"}`}
                 >
                     <FiFile size={20} />
                 </label>
                 <button
                     type="submit"
-                    className="p-3 sm:p-4 bg-[#ab252c] text-white rounded-lg flex items-center justify-center hover:bg-blue-700 transition-all duration-500 transform hover:scale-110"
+                    className={`p-3 sm:p-4 bg-[#ab252c] text-white rounded-lg flex items-center justify-center transition-all duration-500 transform hover:scale-110 ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"}`}
+                    disabled={isDisabled} // Disable send button when processing
                 >
                     <IoSend size={20} />
                 </button>
@@ -99,6 +99,7 @@ const InputBox = ({ onSendMessage }) => {
 
 InputBox.propTypes = {
     onSendMessage: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool.isRequired, // Added prop type validation for isDisabled
 };
 
 export default InputBox;

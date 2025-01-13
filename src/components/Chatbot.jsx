@@ -2,63 +2,62 @@ import { useState, useEffect, useRef } from "react";
 import { AiOutlineRobot } from "react-icons/ai";
 import Message from "./Message";
 import InputBox from "./InputBox";
-import axios from "axios"; // For API requests
+import axios from "axios";
 
 const Chatbot = () => {
     const [messages, setMessages] = useState([
         { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
     ]);
-    const [isProcessing, setIsProcessing] = useState(false); // Added loading state
+    const [isProcessing, setIsProcessing] = useState(false);
     const chatContainerRef = useRef(null);
+    const sendSound = new Audio('/assets/sounds/send.mp3');
     const receiveSound = new Audio('/assets/sounds/receive.mp3');
 
-    // Scroll to the bottom whenever messages are updated
     useEffect(() => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     }, [messages]);
 
-    const handleSendMessage = async (newMessage) => {
+    const handleSendMessage = async (userMessageText) => {
         const userMessage = {
             id: messages.length + 1,
-            text: newMessage.text || "",
+            text: userMessageText,
             sender: "user",
-            file: newMessage.file || null,
-            type: newMessage.file ? (newMessage.file.type.startsWith('audio/') ? 'audio' : 'image') : null,
         };
 
         setMessages([...messages, userMessage]);
-        setIsProcessing(true); // Disable input while processing
+        sendSound.play().catch((error) => console.log("Send sound error:", error));
+        setIsProcessing(true);
 
-        if (userMessage.text) {
-            try {
-                const response = await axios.post("http://localhost:5000/api/chat", {
-                    message: userMessage.text,
-                });
-                const botMessage = {
-                    id: messages.length + 2,
-                    text: response.data.reply || "I'm still learning, but I'll improve!",
-                    sender: "bot",
-                };
-                setMessages((prevMessages) => [...prevMessages, botMessage]);
+        try {
+            const response = await axios.post("http://localhost:5000/api/chat", {
+                message: userMessageText,
+            });
 
-                // Play receive sound
-                receiveSound.play().catch((error) => console.log("Receive sound error:", error));
-            } catch (error) {
-                console.log(error);
-                const errorMessage = {
-                    id: messages.length + 2,
-                    text: "Sorry, I'm having trouble processing your request right now.",
-                    sender: "bot",
-                };
-                setMessages((prevMessages) => [...prevMessages, errorMessage]);
+            const botMessage = {
+                id: messages.length + 2,
+                text: response.data.reply || "I'm still learning, but I'll improve!",
+                sender: "bot",
+                file: response.data.file || null,
+                type: response.data.fileType || null,
+            };
 
-                // Play receive sound
-                receiveSound.play().catch((error) => console.log("Receive sound error:", error));
-            } finally {
-                setIsProcessing(false); // Re-enable input after processing
-            }
+            setMessages((prevMessages) => [...prevMessages, botMessage]);
+
+            receiveSound.play().catch((error) => console.log("Receive sound error:", error));
+        } catch (error) {
+            console.log(error);
+            const errorMessage = {
+                id: messages.length + 2,
+                text: "Sorry, I'm having trouble processing your request right now.",
+                sender: "bot",
+            };
+            setMessages((prevMessages) => [...prevMessages, errorMessage]);
+
+            receiveSound.play().catch((error) => console.log("Receive sound error:", error));
+        } finally {
+            setIsProcessing(false);
         }
     };
 

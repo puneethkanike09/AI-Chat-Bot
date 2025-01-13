@@ -83,15 +83,6 @@ const Chatbot = () => {
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">
                 <InputBox onSendMessage={handleSendMessage} isDisabled={isProcessing} />
             </div>
-
-            <iframe
-                src="https://chat-bot-two-rho.vercel.app/"
-                title="Chatbot"
-                width="400"
-                height="600"
-            >
-            </iframe>
-
         </div>
     );
 };

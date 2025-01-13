@@ -58,7 +58,7 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
+        <div className="fixed bottom-5 right-5 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
             {/* Header */}
             <div className="text-[#ab252c] p-4 flex items-center shadow-lg">
                 <div className="flex items-center space-x-2">

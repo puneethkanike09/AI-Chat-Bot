@@ -38,6 +38,9 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
             >
                 <IoSend size={20} />
             </button>
+
+
+
         </form>
     );
 };

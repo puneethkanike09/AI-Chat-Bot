@@ -1,90 +1,58 @@
-import { useState, useEffect, useRef } from "react";
-import { AiOutlineRobot } from "react-icons/ai";
-import Message from "./Message";
-import InputBox from "./InputBox";
-import axios from "axios";
+import { useState } from 'react';
 
 const Chatbot = () => {
-    const [messages, setMessages] = useState([
-        { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
-    ]);
-    const [isProcessing, setIsProcessing] = useState(false);
-    const chatContainerRef = useRef(null);
-    const sendSound = new Audio('/assets/sounds/send.mp3');
-    const receiveSound = new Audio('/assets/sounds/receive.mp3');
-
-    useEffect(() => {
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-    }, [messages]);
-
-    const handleSendMessage = async (userMessageText) => {
-        const userMessage = {
-            id: messages.length + 1,
-            text: userMessageText,
-            sender: "user",
-        };
-
-        setMessages([...messages, userMessage]);
-        sendSound.play().catch((error) => console.log("Send sound error:", error));
-        setIsProcessing(true);
-
-        try {
-            const response = await axios.post("http://localhost:8080/chat", {
-                prompt: userMessageText,
-            });
-
-            const botMessage = {
-                id: messages.length + 2,
-                text: response.data.reply || "I'm still learning, but I'll improve!",
-                sender: "bot",
-            };
-
-            setMessages((prevMessages) => [...prevMessages, botMessage]);
-            receiveSound.play().catch((error) => console.log("Receive sound error:", error));
-        } catch (error) {
-            console.log(error);
-            const errorMessage = {
-                id: messages.length + 2,
-                text: "Sorry, I'm having trouble processing your request right now.",
-                sender: "bot",
-            };
-            setMessages((prevMessages) => [...prevMessages, errorMessage]);
-            receiveSound.play().catch((error) => console.log("Receive sound error:", error));
-        } finally {
-            setIsProcessing(false);
-        }
-    };
+    const [isOpen, setIsOpen] = useState(false);
+    const [message, setMessage] = useState('');
 
     return (
-        <div className="fixed bottom-5 right-5 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
-            {/* Header */}
-            <div className="text-[#ab252c] p-4 flex items-center shadow-lg">
-                <div className="flex items-center space-x-2">
-                    <AiOutlineRobot size={30} />
-                    <span className="text-lg font-bold tracking-wide">Muliya</span>
+        <div className="fixed bottom-4 right-4 z-50">
+            {/* Chat Window */}
+            {isOpen && (
+                <div className="bg-white rounded-lg shadow-xl w-80 h-96 mb-4 flex flex-col">
+                    {/* Header */}
+                    <div className="bg-white rounded-t-lg p-4 border-b">
+                        <div className="flex items-center gap-2">
+                            <div className="bg-red-600 p-2 rounded">
+                                <div className="text-white text-xl">Muliya</div>
+                            </div>
+                            <span className="text-red-600 font-semibold">Muliya</span>
+                        </div>
+                    </div>
+
+                    {/* Chat Messages */}
+                    <div className="flex-1 p-4 overflow-y-auto">
+                        <div className="bg-red-600 text-white p-3 rounded-lg max-w-[80%] inline-block">
+                            Hello! How can I assist you today?
+                        </div>
+                    </div>
+
+                    {/* Input Area */}
+                    <div className="p-4 border-t">
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                placeholder="Type your message..."
+                                className="flex-1 p-2 border rounded-md focus:outline-none focus:border-red-600"
+                            />
+                            <button
+                                className="bg-red-600 text-white p-2 rounded-md hover:bg-red-700 transition-colors"
+                            >
+                                ➤
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            )}
 
-            {/* Messages */}
-            <div
-                ref={chatContainerRef}
-                className="flex-grow overflow-y-auto p-4 bg-gray-50 space-y-2"
+            {/* Floating Button */}
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="bg-red-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-red-700 transition-colors"
             >
-                {messages.map((message) => (
-                    <Message
-                        key={message.id}
-                        text={message.text}
-                        sender={message.sender}
-                    />
-                ))}
-            </div>
-
-            {/* Input Box */}
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">
-                <InputBox onSendMessage={handleSendMessage} isDisabled={isProcessing} />
-            </div>
+                {isOpen ? '✕' : '💬'}
+            </button>
         </div>
     );
 };

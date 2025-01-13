@@ -16,19 +16,24 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
     return (
         <form
             onSubmit={handleSend}
-            className="flex items-center justify-center gap-4 px-8 md:px-[180px] pb-8 md:pb-16 bg-white p-6 rounded-lg shadow-lg"
+            className="flex items-center gap-3 px-4 py-3 bg-gray-100 border-t border-gray-300 shadow-md"
         >
+            {/* Input field */}
             <input
                 type="text"
-                className="w-full border-2 border-[#ab252c] rounded-lg px-4 py-3 text-sm md:text-lg focus:outline-none focus:ring-1 focus:ring-[#ab252c] focus:border-[#ab252c] placeholder:text-[#ab252c]"
+                className="flex-grow border border-gray-300 rounded-md px-4 py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#ab252c] placeholder-gray-500"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isDisabled}
                 placeholder="Type your message..."
             />
+            {/* Send button */}
             <button
                 type="submit"
-                className={`p-4 bg-[#ab252c] text-white rounded-lg flex items-center justify-center transition-all duration-500 transform  ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"}`}
+                className={`flex items-center justify-center px-4 py-2 text-white text-base rounded-md transition-all duration-300 ${isDisabled
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#ab252c] hover:bg-red-600"
+                    }`}
                 disabled={isDisabled}
             >
                 <IoSend size={20} />

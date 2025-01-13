@@ -4,7 +4,6 @@ import Message from "./Message";
 import InputBox from "./InputBox";
 import axios from "axios";
 
-
 const Chatbot = () => {
     const [messages, setMessages] = useState([
         { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
@@ -59,17 +58,19 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="fixed inset-0 flex flex-col z-50 animate-fade-in-down">
-            <div className="text-[#ab252c] p-5 pl-6 md:pl-44 pr-6 md:pr-44 flex items-center shadow-lg">
-                <div className="flex items-center space-x-4">
-                    <AiOutlineRobot size={38} />
-                    <span className="text-2xl font-bold tracking-wide">Muliya</span>
+        <div className="w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="text-[#ab252c] p-4 flex items-center shadow-lg">
+                <div className="flex items-center space-x-2">
+                    <AiOutlineRobot size={30} />
+                    <span className="text-lg font-bold tracking-wide">Muliya</span>
                 </div>
             </div>
 
+            {/* Messages */}
             <div
                 ref={chatContainerRef}
-                className="flex-grow overflow-y-auto p-6 bg-white shadow-inner rounded-lg space-y-4"
+                className="flex-grow overflow-y-auto p-4 bg-gray-50 space-y-2"
             >
                 {messages.map((message) => (
                     <Message
@@ -80,6 +81,7 @@ const Chatbot = () => {
                 ))}
             </div>
 
+            {/* Input Box */}
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">
                 <InputBox onSendMessage={handleSendMessage} isDisabled={isProcessing} />
             </div>

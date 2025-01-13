@@ -123,7 +123,7 @@ const Chatbot = () => {
                     {/* <img className="w-16 " src="../../public/assets/images/images.jpg" alt="" /> */}
                     <AiOutlineRobot size={30} />
                     {/* <span className="text-lg font-bold tracking-wide">Muliya</span> */}
-                    <img className="w-16 " src="../../public/assets/images/images.jpg" alt="" />
+                    <img className="w-16 " src="../assets/images/images.jpg" alt="" />
                 </div>
             </div>
 

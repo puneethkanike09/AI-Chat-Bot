@@ -18,7 +18,6 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
             onSubmit={handleSend}
             className="flex items-center gap-3 px-4 py-3 bg-[#ab252c] shadow-md"
         >
-            {/* Input field */}
             <input
                 type="text"
                 className="bg-[#ab252c] flex-grow border-1 border-[#ab252c] rounded-md px-4 py-2 text-sm md:text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#ab252c] placeholder-white"
@@ -27,20 +26,16 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
                 disabled={isDisabled}
                 placeholder="Type your message..."
             />
-            {/* Send button */}
             <button
                 type="submit"
                 className={`flex items-center justify-center px-4 py-2 text-white text-base rounded-md transition-all duration-300 ${isDisabled
-                    ? "bg-[#ab252c]  cursor-not-allowed"
+                    ? "bg-[#ab252c] cursor-not-allowed"
                     : "bg-[#ab252c] hover:bg-red-600"
                     }`}
                 disabled={isDisabled}
             >
                 <IoSend size={20} />
             </button>
-
-
-
         </form>
     );
 };

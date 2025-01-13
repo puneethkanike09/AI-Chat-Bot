@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { AiOutlineRobot } from "react-icons/ai";
+// import { AiOutlineRobot } from "react-icons/ai";
 import Message from "./Message";
 import InputBox from "./InputBox";
 import axios from "axios";
@@ -116,16 +116,16 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-lg flex flex-col overflow-hidden  border-[#ab252c] ">
+        <div className="fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-lg flex flex-col overflow-hidden border-[#ab252c] animate-fade-in">
             {/* Header */}
             <div className="text-white bg-[#ab252c] p-4 flex items-center shadow-lg">
                 <div className="flex items-center space-x-2">
-                    <AiOutlineRobot size={30} />
-                    <span className="text-lg font-bold tracking-wide">Muliya</span>
+                    <img className="w-16 " src="../../public/assets/images/images.jpg" alt="" />
+                    {/* <AiOutlineRobot size={30} />
+                    <span className="text-lg font-bold tracking-wide">Muliya</span> */}
                 </div>
             </div>
 
-            {/* Messages */}
             {/* Messages */}
             <div
                 ref={chatContainerRef}

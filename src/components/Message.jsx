@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const Message = ({ text, sender, file, type }) => {
+const Message = ({ text, sender }) => {
     const isBot = sender === "bot";
 
     return (
@@ -10,24 +10,15 @@ const Message = ({ text, sender, file, type }) => {
             <div
                 className={`px-4 py-3 max-w-[90%] lg:max-w-[75%] text-sm lg:text-lg rounded-lg shadow-md ${isBot ? "bg-[#ab252c] text-white" : "bg-gray-200 text-blue-950"}`}
             >
-                {text && <p>{text}</p>}
-                {file && type === "image" && (
-                    <img
-                        src={file}
-                        alt="Uploaded"
-                        className="mt-2 rounded-lg max-w-[200px]"
-                    />
-                )}
+                {text}
             </div>
         </div>
     );
 };
 
 Message.propTypes = {
-    text: PropTypes.string,
+    text: PropTypes.string.isRequired,
     sender: PropTypes.oneOf(["bot", "user"]).isRequired,
-    file: PropTypes.string,
-    type: PropTypes.oneOf(["image"]),
 };
 
 export default Message;

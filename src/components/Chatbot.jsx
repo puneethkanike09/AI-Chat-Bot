@@ -4,6 +4,7 @@ import Message from "./Message";
 import InputBox from "./InputBox";
 import axios from "axios";
 
+
 const Chatbot = () => {
     const [messages, setMessages] = useState([
         { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
@@ -31,20 +32,17 @@ const Chatbot = () => {
         setIsProcessing(true);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/chat", {
-                message: userMessageText,
+            const response = await axios.post("http://localhost:8080/chat", {
+                prompt: userMessageText,
             });
 
             const botMessage = {
                 id: messages.length + 2,
                 text: response.data.reply || "I'm still learning, but I'll improve!",
                 sender: "bot",
-                file: response.data.file || null,
-                type: response.data.fileType || null,
             };
 
             setMessages((prevMessages) => [...prevMessages, botMessage]);
-
             receiveSound.play().catch((error) => console.log("Receive sound error:", error));
         } catch (error) {
             console.log(error);
@@ -54,7 +52,6 @@ const Chatbot = () => {
                 sender: "bot",
             };
             setMessages((prevMessages) => [...prevMessages, errorMessage]);
-
             receiveSound.play().catch((error) => console.log("Receive sound error:", error));
         } finally {
             setIsProcessing(false);
@@ -79,8 +76,6 @@ const Chatbot = () => {
                         key={message.id}
                         text={message.text}
                         sender={message.sender}
-                        file={message.file}
-                        type={message.type}
                     />
                 ))}
             </div>
@@ -88,6 +83,15 @@ const Chatbot = () => {
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">
                 <InputBox onSendMessage={handleSendMessage} isDisabled={isProcessing} />
             </div>
+
+            <iframe
+                src="https://chat-bot-two-rho.vercel.app/"
+                title="Chatbot"
+                width="400"
+                height="600"
+            >
+            </iframe>
+
         </div>
     );
 };

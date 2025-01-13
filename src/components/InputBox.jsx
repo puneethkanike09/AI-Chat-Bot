@@ -28,7 +28,7 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
             />
             <button
                 type="submit"
-                className={`p-4 bg-[#ab252c] text-white rounded-lg flex items-center justify-center transition-all duration-500 transform hover:scale-110 ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"}`}
+                className={`p-4 bg-[#ab252c] text-white rounded-lg flex items-center justify-center transition-all duration-500 transform  ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"}`}
                 disabled={isDisabled}
             >
                 <IoSend size={20} />

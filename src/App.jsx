@@ -21,7 +21,7 @@ const App = () => {
         {isChatOpen ? <AiOutlineClose size={24} /> : <AiOutlineRobot size={24} />}
       </button>
 
-      <div style={{ visibility: isChatOpen ? "visible" : "hidden" }}>
+      <div>
         {isChatOpen && <Chatbot />}
       </div>
     </div>

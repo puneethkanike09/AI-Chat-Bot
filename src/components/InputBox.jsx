@@ -16,12 +16,12 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
     return (
         <form
             onSubmit={handleSend}
-            className="flex items-center gap-3 px-4 py-3 bg-gray-100 border-t border-gray-300 shadow-md"
+            className="flex items-center gap-3 px-4 py-3 bg-[#ab252c] shadow-md"
         >
             {/* Input field */}
             <input
                 type="text"
-                className="flex-grow border border-gray-300 rounded-md px-4 py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#ab252c] placeholder-gray-500"
+                className="bg-[#ab252c] flex-grow border-1 border-[#ab252c] rounded-md px-4 py-2 text-sm md:text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#ab252c] placeholder-white"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isDisabled}
@@ -31,7 +31,7 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
             <button
                 type="submit"
                 className={`flex items-center justify-center px-4 py-2 text-white text-base rounded-md transition-all duration-300 ${isDisabled
-                    ? "bg-gray-400 cursor-not-allowed"
+                    ? "bg-[#ab252c]  cursor-not-allowed"
                     : "bg-[#ab252c] hover:bg-red-600"
                     }`}
                 disabled={isDisabled}

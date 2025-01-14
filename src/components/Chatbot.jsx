@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { AiOutlineRobot } from "react-icons/ai";
+// import { AiOutlineRobot } from "react-icons/ai";
 import Message from "./Message";
 import InputBox from "./InputBox";
-import axios from "axios";
+
 
 const Chatbot = () => {
     const [messages, setMessages] = useState([
@@ -79,36 +79,41 @@ const Chatbot = () => {
 
     const handleSendMessage = async (userMessageText) => {
         const userMessage = {
-            id: messages.length + 1,
+            id: crypto.randomUUID(),
             text: userMessageText,
             sender: "user",
         };
 
-        setMessages([...messages, userMessage]);
+        setMessages(prev => [...prev, userMessage]);
         await playSound(sendSoundRef);
         setIsProcessing(true);
 
         try {
-            const response = await axios.post("http://localhost:8080/chat", {
-                prompt: userMessageText,
-            });
+            // Modified to use the new URL structure
+            const response = await fetch(`http://localhost:8000/chat/?prompt=${encodeURIComponent(userMessageText)}`);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
 
             const botMessage = {
-                id: messages.length + 2,
-                text: response.data.reply || "I'm still learning, but I'll improve!",
+                id: crypto.randomUUID(),
+                text: data.reply || "I'm still learning, but I'll improve!",
                 sender: "bot",
             };
 
-            setMessages((prevMessages) => [...prevMessages, botMessage]);
+            setMessages(prev => [...prev, botMessage]);
             await playSound(receiveSoundRef);
         } catch (error) {
-            console.log(error);
+            console.error("Chat error:", error);
             const errorMessage = {
-                id: messages.length + 2,
+                id: crypto.randomUUID(),
                 text: "Sorry, I'm having trouble processing your request right now.",
                 sender: "bot",
             };
-            setMessages((prevMessages) => [...prevMessages, errorMessage]);
+            setMessages(prev => [...prev, errorMessage]);
             await playSound(receiveSoundRef);
         } finally {
             setIsProcessing(false);
@@ -121,7 +126,7 @@ const Chatbot = () => {
             <div className="text-white bg-[#ab252c] p-4 flex items-center shadow-lg">
                 <div className="flex items-center space-x-2">
                     {/* <img className="w-16 " src="../../public/assets/images/images.jpg" alt="" /> */}
-                    <AiOutlineRobot size={30} />
+                    {/* <AiOutlineRobot size={30} /> */}
                     {/* <span className="text-lg font-bold tracking-wide">Muliya</span> */}
                     <img className="w-16 " src="../assets/images/images.jpg" alt="" />
                 </div>

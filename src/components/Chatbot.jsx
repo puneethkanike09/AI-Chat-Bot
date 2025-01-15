@@ -1,70 +1,58 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Message from "./Message";
 import InputBox from "./InputBox";
 
 
-const messageStore = [
-    { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
-];
-
-const Chatbot = ({ className = 'chat-window' }) => {
-
-    const [messages, setMessages] = useState(messageStore);
+const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
     const [isProcessing, setIsProcessing] = useState(false);
-    const chatContainerRef = useRef(null);
+    const chatRef = useRef(null);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-
-
     useEffect(() => {
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        const chat = chatRef.current;
+        if (chat) {
+            chat.scrollTop = chat.scrollHeight;
         }
     }, [messages]);
 
-    const handleSendMessage = async (userMessageText) => {
-        const userMessage = {
+    const sendMessage = async (text) => {
+        const newUserMessage = {
             id: crypto.randomUUID(),
-            text: userMessageText,
+            text,
             sender: "user",
         };
 
-        const updatedMessages = [...messages, userMessage];
+        const updatedMessages = [...messages, newUserMessage];
         setMessages(updatedMessages);
-        messageStore.push(userMessage);
-
         setIsProcessing(true);
 
         try {
-            const response = await fetch(`${backendUrl}/chat/?prompt=${encodeURIComponent(userMessageText)}`);
-
+            const response = await fetch(`${backendUrl}/chat/?prompt=${encodeURIComponent(text)}`);
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error("Failed to get response");
             }
 
             const data = await response.json();
 
-            const botMessage = {
+            const botResponse = {
                 id: crypto.randomUUID(),
                 text: data.reply || "I'm still learning, but I'll improve!",
                 sender: "bot",
             };
 
-            const finalMessages = [...updatedMessages, botMessage];
-            setMessages(finalMessages);
-            messageStore.push(botMessage);
+            setMessages([...updatedMessages, botResponse]);
         } catch (error) {
-            console.error("Chat error:", error);
+            console.error("Failed to send message:", error);
+
             const errorMessage = {
                 id: crypto.randomUUID(),
                 text: "Sorry, I'm having trouble processing your request right now.",
                 sender: "bot",
             };
-            const finalMessages = [...updatedMessages, errorMessage];
-            setMessages(finalMessages);
-            messageStore.push(errorMessage);
+
+            setMessages([...updatedMessages, errorMessage]);
         } finally {
             setIsProcessing(false);
         }
@@ -78,10 +66,7 @@ const Chatbot = ({ className = 'chat-window' }) => {
                 </div>
             </div>
 
-            <div
-                ref={chatContainerRef}
-                className="flex-grow overflow-y-auto p-4 bg-white space-y-2 custom-scrollbar"
-            >
+            <div ref={chatRef} className="flex-grow overflow-y-auto p-4 bg-white space-y-2 custom-scrollbar">
                 {messages.map((message) => (
                     <Message
                         key={message.id}
@@ -92,15 +77,16 @@ const Chatbot = ({ className = 'chat-window' }) => {
             </div>
 
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">
-                <InputBox onSendMessage={handleSendMessage} isDisabled={isProcessing} />
+                <InputBox onSendMessage={sendMessage} isDisabled={isProcessing} />
             </div>
         </div>
     );
 };
 
-
 Chatbot.propTypes = {
     className: PropTypes.string,
+    messages: PropTypes.array.isRequired,
+    setMessages: PropTypes.func.isRequired,
 };
 
 export default Chatbot;

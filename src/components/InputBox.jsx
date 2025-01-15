@@ -30,7 +30,7 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
                 type="submit"
                 className={`flex items-center justify-center px-4 py-2 text-white text-base rounded-md transition-all duration-300 ${isDisabled
                     ? "bg-[#ab252c] cursor-not-allowed"
-                    : "bg-[#ab252c] hover:bg-red-600"
+                    : "bg-[#ab252c] "
                     }`}
                 disabled={isDisabled}
             >

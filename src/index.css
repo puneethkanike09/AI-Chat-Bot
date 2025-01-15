@@ -31,3 +31,51 @@
   scrollbar-width: thin;
   scrollbar-color: #ab252c #f1f1f1;
 } */
+
+
+
+/* Add this to your CSS file (e.g., index.css) */
+
+.chat-window {
+    animation: slideUp 0.5s ease-out;
+    transform-origin: bottom right;
+}
+
+.message {
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Optional: Add this if you want the chat to slide down when closing */
+.chat-window.closing {
+    animation: slideDown 0.5s ease-in forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+}

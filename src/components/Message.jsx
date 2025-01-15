@@ -1,3 +1,4 @@
+// Message.jsx
 import PropTypes from "prop-types";
 
 const Message = ({ text, sender }) => {
@@ -5,7 +6,7 @@ const Message = ({ text, sender }) => {
 
     return (
         <div
-            className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2 animate-${isBot ? "slide-in-left" : "slide-in-right"
+            className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2 message ${isBot ? "message-bot" : "message-user"
                 }`}
         >
             <div

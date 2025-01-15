@@ -13,29 +13,31 @@ const Chatbot = () => {
     const sendSoundRef = useRef(null);
     const receiveSoundRef = useRef(null);
 
-    // Initialize and preload audio
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
     useEffect(() => {
-        // Create audio elements
+
         sendSoundRef.current = new Audio('/assets/sounds/send.mp3');
         receiveSoundRef.current = new Audio('/assets/sounds/receive.mp3');
 
-        // Preload audio files
+
         const preloadAudio = async () => {
             try {
                 sendSoundRef.current.load();
                 receiveSoundRef.current.load();
 
-                // Set volume to ensure quick playback
+
                 sendSoundRef.current.volume = 0.5;
                 receiveSoundRef.current.volume = 0.5;
 
-                // Optional: Pre-buffer the audio
+
                 await Promise.all([
                     sendSoundRef.current.play().then(() => sendSoundRef.current.pause()),
                     receiveSoundRef.current.play().then(() => receiveSoundRef.current.pause())
                 ]);
 
-                // Reset time after prebuffering
+
                 sendSoundRef.current.currentTime = 0;
                 receiveSoundRef.current.currentTime = 0;
             } catch (error) {
@@ -45,7 +47,7 @@ const Chatbot = () => {
 
         preloadAudio();
 
-        // Cleanup
+
         return () => {
             if (sendSoundRef.current) {
                 sendSoundRef.current.pause();
@@ -58,14 +60,14 @@ const Chatbot = () => {
         };
     }, []);
 
-    // Scroll to bottom effect
+
     useEffect(() => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     }, [messages]);
 
-    // Function to play sound with better error handling
+
     const playSound = async (soundRef) => {
         try {
             if (soundRef.current) {
@@ -89,8 +91,8 @@ const Chatbot = () => {
         setIsProcessing(true);
 
         try {
-            // Modified to use the new URL structure
-            const response = await fetch(`http://localhost:8000/chat/?prompt=${encodeURIComponent(userMessageText)}`);
+
+            const response = await fetch(`${backendUrl}/chat/?prompt=${encodeURIComponent(userMessageText)}`);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');

@@ -1,4 +1,3 @@
-// Message.jsx
 import PropTypes from "prop-types";
 
 const Message = ({ text, sender }) => {

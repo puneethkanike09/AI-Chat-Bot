@@ -1,9 +1,9 @@
-// Chatbot.jsx
 import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import Message from "./Message";
 import InputBox from "./InputBox";
 
-// Create a messages store outside the component to persist messages
+
 const messageStore = [
     { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
 ];
@@ -13,64 +13,16 @@ const Chatbot = ({ className = 'chat-window' }) => {
     const [messages, setMessages] = useState(messageStore);
     const [isProcessing, setIsProcessing] = useState(false);
     const chatContainerRef = useRef(null);
-    const sendSoundRef = useRef(null);
-    const receiveSoundRef = useRef(null);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    useEffect(() => {
-        sendSoundRef.current = new Audio('/assets/sounds/send.mp3');
-        receiveSoundRef.current = new Audio('/assets/sounds/receive.mp3');
 
-        const preloadAudio = async () => {
-            try {
-                sendSoundRef.current.load();
-                receiveSoundRef.current.load();
-                sendSoundRef.current.volume = 0.5;
-                receiveSoundRef.current.volume = 0.5;
-
-                await Promise.all([
-                    sendSoundRef.current.play().then(() => sendSoundRef.current.pause()),
-                    receiveSoundRef.current.play().then(() => receiveSoundRef.current.pause())
-                ]);
-
-                sendSoundRef.current.currentTime = 0;
-                receiveSoundRef.current.currentTime = 0;
-            } catch (error) {
-                console.log("Audio preload error:", error);
-            }
-        };
-
-        preloadAudio();
-
-        return () => {
-            if (sendSoundRef.current) {
-                sendSoundRef.current.pause();
-                sendSoundRef.current = null;
-            }
-            if (receiveSoundRef.current) {
-                receiveSoundRef.current.pause();
-                receiveSoundRef.current = null;
-            }
-        };
-    }, []);
 
     useEffect(() => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     }, [messages]);
-
-    const playSound = async (soundRef) => {
-        try {
-            if (soundRef.current) {
-                soundRef.current.currentTime = 0;
-                await soundRef.current.play();
-            }
-        } catch (error) {
-            console.log("Sound playback error:", error);
-        }
-    };
 
     const handleSendMessage = async (userMessageText) => {
         const userMessage = {
@@ -81,9 +33,8 @@ const Chatbot = ({ className = 'chat-window' }) => {
 
         const updatedMessages = [...messages, userMessage];
         setMessages(updatedMessages);
-        messageStore.push(userMessage); // Update the message store
+        messageStore.push(userMessage);
 
-        await playSound(sendSoundRef);
         setIsProcessing(true);
 
         try {
@@ -103,8 +54,7 @@ const Chatbot = ({ className = 'chat-window' }) => {
 
             const finalMessages = [...updatedMessages, botMessage];
             setMessages(finalMessages);
-            messageStore.push(botMessage); // Update the message store
-            await playSound(receiveSoundRef);
+            messageStore.push(botMessage);
         } catch (error) {
             console.error("Chat error:", error);
             const errorMessage = {
@@ -114,8 +64,7 @@ const Chatbot = ({ className = 'chat-window' }) => {
             };
             const finalMessages = [...updatedMessages, errorMessage];
             setMessages(finalMessages);
-            messageStore.push(errorMessage); // Update the message store
-            await playSound(receiveSoundRef);
+            messageStore.push(errorMessage);
         } finally {
             setIsProcessing(false);
         }
@@ -147,6 +96,11 @@ const Chatbot = ({ className = 'chat-window' }) => {
             </div>
         </div>
     );
+};
+
+
+Chatbot.propTypes = {
+    className: PropTypes.string,
 };
 
 export default Chatbot;

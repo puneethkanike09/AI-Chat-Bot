@@ -8,11 +8,11 @@ const App = () => {
 
   const toggleChat = () => {
     if (isChatOpen) {
-      // Start closing animation
+
       setIsClosing(true);
-      // Change icon immediately
+
       setIsChatOpen(false);
-      // Remove chat window after animation completes
+
       setTimeout(() => {
         setIsClosing(false);
       }, 500);

@@ -88,7 +88,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
                 {isProcessing && <TypingIndicator />}
             </div>
 
-            <div>
+            <div className="">
                 <InputBox onSendMessage={sendMessage} isDisabled={isProcessing} />
             </div>
         </div>

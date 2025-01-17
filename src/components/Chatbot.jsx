@@ -70,7 +70,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
 
 
     return (
-        <div className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden border-[#ab252c] ${className}`}>
+        <div className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden ${className}`}>
             <div className="text-white bg-[#ab252c] p-4 flex items-center shadow-lg">
                 <div className="flex items-center space-x-2">
                     <img className="w-16" src="../assets/images/images.jpg" alt="" />
@@ -88,7 +88,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
                 {isProcessing && <TypingIndicator />}
             </div>
 
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">
+            <div>
                 <InputBox onSendMessage={sendMessage} isDisabled={isProcessing} />
             </div>
         </div>

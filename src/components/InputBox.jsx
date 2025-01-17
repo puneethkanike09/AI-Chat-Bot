@@ -16,7 +16,7 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
     return (
         <form
             onSubmit={handleSend}
-            className="flex items-center gap-3 px-4 py-3 bg-[#ab252c] shadow-md"
+            className="flex items-center gap-3 px-4 py-3 bg-[#ab252c] "
         >
             <input
                 type="text"

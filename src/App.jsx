@@ -25,7 +25,7 @@ const App = () => {
   return (
     <div>
       <button
-        className="chat-button fixed bottom-5 z-10 right-5 bg-[#ab252c] text-white rounded-full focus:outline-none transition-all duration-500 border-[3px] border-white w-14 h-14 flex items-center justify-center"
+        className="chat-button fixed bottom-5 z-10 right-5 bg-[#ab252c] shadow-2xl text-white rounded-full focus:outline-none transition-all duration-500 border-[3px] border-white w-14 h-14 flex items-center justify-center"
         onClick={toggleChat}
         aria-label={isChatOpen ? "Close Chat" : "Open Chat"}
       >

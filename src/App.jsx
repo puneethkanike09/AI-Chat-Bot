@@ -25,12 +25,12 @@ const App = () => {
   return (
     <div>
       <button
-        className="fixed bottom-5 z-10 right-5 bg-[#ab252c] text-white rounded-full focus:outline-none transition-all duration-500 border-[3px] border-white w-14 h-14 flex items-center justify-center"
+        className="chat-button fixed bottom-5 z-10 right-5 bg-[#ab252c] text-white rounded-full focus:outline-none transition-all duration-500 border-[3px] border-white w-14 h-14 flex items-center justify-center"
         onClick={toggleChat}
         aria-label={isChatOpen ? "Close Chat" : "Open Chat"}
       >
         <span
-          className={`block transform transition-transform duration-500 ${isChatOpen ? "rotate-90" : "rotate-0"
+          className={`chat-button-icon block ${isChatOpen ? "open" : "closed"
             }`}
         >
           {isChatOpen ? (

@@ -24,7 +24,7 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isDisabled}
-                placeholder="Type your message..."
+                placeholder="Type your question..."
             />
             <button
                 type="submit"

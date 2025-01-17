@@ -58,6 +58,17 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
         }
     };
 
+    const TypingIndicator = () => (
+        <div className="flex justify-start mb-2">
+            <div className="typing-indicator">
+                <div className="typing-circle"></div>
+                <div className="typing-circle"></div>
+                <div className="typing-circle"></div>
+            </div>
+        </div>
+    );
+
+
     return (
         <div className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden border-[#ab252c] ${className}`}>
             <div className="text-white bg-[#ab252c] p-4 flex items-center shadow-lg">
@@ -74,6 +85,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
                         sender={message.sender}
                     />
                 ))}
+                {isProcessing && <TypingIndicator />}
             </div>
 
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">

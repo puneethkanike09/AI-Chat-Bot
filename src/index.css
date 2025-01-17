@@ -2,80 +2,140 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   font-family: monospace;
 }
 
-
-
-/* Add this to your CSS file */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 0px;  /* width of the scrollbar */
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;  /* color of the track */
-  
+  width: 0px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #ab252c;  /* color of the scroll thumb */
- border-radius: 4px;
+  background: #ab252c;
+  border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #911f25;  /* color when hovering */
+  background: #911f25;
 }
 
-/* .custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #ab252c #f1f1f1;
-} */
-
-
-
-/* Add this to your CSS file (e.g., index.css) */
-
 .chat-window {
-    animation: slideUp 0.5s ease-out;
-    transform-origin: bottom right;
+  animation: origamiUnfold 0.9s ease-out;
+  transform-origin: bottom right;
+  perspective: 1200px;
+}
+
+@keyframes origamiUnfold {
+  0% {
+    opacity: 0;
+    transform: rotate3d(1, 1, 0, -120deg) scale(0.3);
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate3d(1, 1, 0, 0deg) scale(1);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+.chat-window.closing {
+  animation: origamiFold 0.5s ease-in forwards;
+}
+
+@keyframes origamiFold {
+  0% {
+    opacity: 1;
+    transform: rotate3d(1, 1, 0, 0deg) scale(1);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate3d(1, 1, 0, 120deg) scale(0.3);
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  }
 }
 
 .message {
-    opacity: 0;
-    animation: slideIn 0.5s ease-out forwards;
+  opacity: 0;
+  animation: messageSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(100%);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.message-bot {
+  transform: translateX(-50px);
 }
 
-@keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+@keyframes messageSlide {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* Optional: Add this if you want the chat to slide down when closing */
-.chat-window.closing {
-    animation: slideDown 0.5s ease-in forwards;
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 4px 8px;
+  background: rgba(171, 37, 44, 0.1);
+  border-radius: 12px;
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(100%);
-    }
+.typing-circle {
+  width: 8px;
+  height: 8px;
+  background: #ab252c;
+  border-radius: 50%;
+  animation: typingBounce 1s infinite;
+}
+
+.typing-circle:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-circle:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.chat-button {
+  animation: buttonAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chat-button::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(45deg, #ab252c, transparent, #ab252c);
+  border-radius: inherit;
+  z-index: -1;
+  animation: borderGlow 3s linear infinite;
+}
+
+.chat-button-icon {
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chat-button-icon.open {
+  transform: rotate(360deg) scale(1.2);
+}
+
+.chat-button-icon.closed {
+  transform: rotate(0deg) scale(1);
+}
+
+@keyframes borderGlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

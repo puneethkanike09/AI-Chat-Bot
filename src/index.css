@@ -112,10 +112,30 @@
   content: '';
   position: absolute;
   inset: -3px;
-  background: linear-gradient(45deg, #ab252c, transparent, #ab252c);
+  background: linear-gradient(
+    135deg,
+    transparent 20%,
+    rgba(171, 37, 44, 0.2) 40%,
+    rgba(171, 37, 44, 0.8) 50%,
+    rgba(171, 37, 44, 0.2) 60%,
+    transparent 80%
+  );
+  background-size: 400% 400%;
   border-radius: inherit;
   z-index: -1;
-  animation: borderGlow 3s linear infinite;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 100%;
+  }
+  50% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
 }
 
 .chat-button-icon {
@@ -131,11 +151,4 @@
   transform: rotate(0deg) scale(1);
 }
 
-@keyframes borderGlow {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+

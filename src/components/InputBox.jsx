@@ -14,40 +14,43 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
         }
     };
 
-    const handleChange = (e) => {
-        if (e.target.value.length <= maxLength) {
-            setInput(e.target.value);
+    const handleInput = (e) => {
+        const value = e.target.value;
+        if (value.length <= maxLength) {
+            setInput(value);
         }
     };
 
     return (
-        <form
-            onSubmit={handleSend}
-            className="flex items-center gap-3 px-4 py-3 bg-[#ab252c]"
-        >
-            <input
-                type="text"
-                className="bg-[#ab252c] flex-grow border-1 border-[#ab252c] rounded-md px-4 py-2 text-sm md:text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#ab252c] placeholder-white"
-                value={input}
-                onChange={handleChange}
-                disabled={isDisabled}
-                placeholder="Type your question..."
-                maxLength={maxLength}
-            />
-            <span className="text-white text-sm">
-                {input.length}/{maxLength}
-            </span>
-            <button
-                type="submit"
-                className={`flex items-center justify-center px-4 py-2 text-white text-base rounded-md transition-all duration-300 ${isDisabled
-                    ? "bg-[#ab252c] cursor-not-allowed"
-                    : "bg-[#ab252c]"
-                    }`}
-                disabled={isDisabled}
+        <div className="flex flex-col w-full">
+            <form
+                onSubmit={handleSend}
+                className="flex items-center gap-3 px-4 py-3 bg-[#ab252c]"
             >
-                <IoSend size={20} />
-            </button>
-        </form>
+                <div className="flex-grow relative">
+                    <input
+                        type="text"
+                        className="w-full bg-[#ab252c] border-1 border-[#ab252c] rounded-md px-4 pr-16 py-2 text-sm md:text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#ab252c] placeholder-white"
+                        value={input}
+                        onChange={handleInput}
+                        disabled={isDisabled}
+                        placeholder="Type your question..."
+                        maxLength={maxLength}
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/80 bg-[#ab252c] px-1">
+                        {input.length}/{maxLength}
+                    </div>
+                </div>
+                <button
+                    type="submit"
+                    className={`flex items-center justify-center px-4 py-2 text-white text-base rounded-md transition-all duration-300 ${isDisabled ? "bg-[#ab252c] cursor-not-allowed" : "bg-[#ab252c]"
+                        }`}
+                    disabled={isDisabled}
+                >
+                    <IoSend size={20} />
+                </button>
+            </form>
+        </div>
     );
 };
 

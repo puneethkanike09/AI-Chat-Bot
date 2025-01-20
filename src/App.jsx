@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Chatbot from "./components/Chatbot";
-import { AiOutlineRobot, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
+import { MdMessage } from "react-icons/md";
 
 const App = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -25,18 +26,17 @@ const App = () => {
   return (
     <div>
       <button
-        className="chat-button fixed bottom-5 z-10 right-5 bg-[#ab252c] shadow-2xl text-white rounded-full focus:outline-none transition-all duration-500 border-[3px] border-white w-14 h-14 flex items-center justify-center"
+        className={`chat-button fixed bottom-5 z-10 right-5 bg-[#ab252c] text-white rounded-full focus:outline-none transition-all duration-500 border-[2px] border-white w-14 h-14 flex items-center justify-center ${isChatOpen ? 'opened' : ''}`}
         onClick={toggleChat}
         aria-label={isChatOpen ? "Close Chat" : "Open Chat"}
       >
         <span
-          className={`chat-button-icon block ${isChatOpen ? "open" : "closed"
-            }`}
+          className={`chat-button-icon block ${isChatOpen ? "open" : "closed"}`}
         >
           {isChatOpen ? (
             <AiOutlineClose size={20} />
           ) : (
-            <AiOutlineRobot size={24} />
+            <MdMessage size={24} />
           )}
         </span>
       </button>

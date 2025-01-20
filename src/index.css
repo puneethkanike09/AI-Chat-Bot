@@ -19,12 +19,6 @@
   background: #911f25;
 }
 
-.message {
-  opacity: 0;
-  transform: translateY(20px); 
-  animation: messageFadeIn 0.2s ease-out forwards;
-  border-radius: 57% 43% 70% 30% / 44% 50% 50% 56% ;
-}
 
 @keyframes messageFadeIn {
   0% {

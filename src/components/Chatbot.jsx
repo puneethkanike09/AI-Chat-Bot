@@ -70,14 +70,14 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
 
 
     return (
-        <div className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px]  shadow-2xl rounded-2xl flex flex-col overflow-hidden ${className}`}>
-            <div className="text-white bg-[#ab252c] p-4 flex items-center shadow-2xl">
+        <div className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white shadow-2xl rounded-md flex flex-col overflow-hidden ${className}`}>
+            <div className="text-white bg-[#ab252c] p-4 flex items-center rounded-br-3xl ">
                 <div className="flex items-center space-x-2">
                     <img className="w-16" src="../assets/images/images.jpg" alt="" />
                 </div>
             </div>
 
-            <div ref={chatRef} className="flex-grow overflow-y-auto p-4 bg-white space-y-2 custom-scrollbar">
+            <div ref={chatRef} className="flex-grow overflow-y-auto p-4  space-y-2 custom-scrollbar">
                 {messages.map((message) => (
                     <Message
                         key={message.id}
@@ -88,7 +88,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
                 {isProcessing && <TypingIndicator />}
             </div>
 
-            <div className="shadow-lg">
+            <div className="shadow-lg ">
                 <InputBox onSendMessage={sendMessage} isDisabled={isProcessing} />
             </div>
         </div>

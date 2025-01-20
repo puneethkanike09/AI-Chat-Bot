@@ -10,8 +10,8 @@ const Message = ({ text, sender }) => {
         >
             <div
                 className={`px-4 py-2 max-w-[75%] text-sm  ${isBot
-                    ? "bg-[#ab252c] text-[#ffffff] rounded-br-3xl rounded-tl-3xl rounded-tr-3xl  border-2 border-[#ab252c] "
-                    : "bg-gray-200 text-gray-900 rounded-bl-3xl rounded-tl-3xl rounded-tr-3xl"
+                    ? "bg-[#ab252c] text-[#ffffff] rounded-br-3xl rounded-bl-3xl rounded-tr-3xl  border-2 border-[#ab252c] "
+                    : "bg-gray-200 text-gray-900 rounded-bl-3xl rounded-tl-3xl rounded-br-3xl"
                     }`}
 
             >

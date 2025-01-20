@@ -34,7 +34,7 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
                         value={input}
                         onChange={handleInput}
                         disabled={isDisabled}
-                        placeholder="Type your question..."
+                        placeholder="Type your text..."
                         maxLength={maxLength}
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/80 bg-[#ab252c] px-1">

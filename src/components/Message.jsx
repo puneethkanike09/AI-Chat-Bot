@@ -13,6 +13,7 @@ const Message = ({ text, sender }) => {
                     ? "bg-[#ab252c] text-[#ffffff] rounded-br-3xl rounded-tl-3xl rounded-tr-3xl  border-2 border-[#ab252c] "
                     : "bg-gray-200 text-gray-900 rounded-bl-3xl rounded-tl-3xl rounded-tr-3xl"
                     }`}
+
             >
                 {text}
             </div>

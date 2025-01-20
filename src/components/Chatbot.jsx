@@ -77,7 +77,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
                 </div>
             </div>
 
-            <div ref={chatRef} className="flex-grow overflow-y-auto p-4 space-y-2 custom-scrollbar bg-white/50 backdrop-blur-lg shadow-lg rounded-lg">
+            <div ref={chatRef} className="flex-grow overflow-y-auto p-4 space-y-2 custom-scrollbar">
                 {messages.map((message) => (
                     <Message
                         key={message.id}

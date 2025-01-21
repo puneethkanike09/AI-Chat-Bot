@@ -25,25 +25,25 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
         <div className="flex flex-col w-full ">
             <form
                 onSubmit={handleSend}
-                className="flex items-center gap-3 px-4 py-3 rounded-tl-3xl bg-[#ab252c]"
+                className="flex items-center gap-3 px-4 py-3 rounded-tl-3xl bg-[#AF1614]"
             >
                 <div className="flex-grow relative">
                     <input
                         type="text"
-                        className="w-full  bg-[#ab252c]  px-4 pr-16 py-2 text-sm md:text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#ab252c] placeholder-white"
+                        className="w-full  bg-[#AF1614]  px-4 pr-16 py-2 text-sm md:text-sm text-[#f9eded] focus:outline-none focus:ring-1 focus:ring-[#ab252c] placeholder-white"
                         value={input}
                         onChange={handleInput}
                         disabled={isDisabled}
                         placeholder="Type your text..."
                         maxLength={maxLength}
                     />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/80 bg-[#ab252c] px-1">
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#f9eded]/80 bg-[#AF1614] px-1">
                         {input.length}/{maxLength}
                     </div>
                 </div>
                 <button
                     type="submit"
-                    className={`flex items-center justify-center px-4 py-2 text-white text-base rounded-md transition-all duration-300 ${isDisabled ? "bg-[#ab252c] cursor-not-allowed" : "bg-[#ab252c]"
+                    className={`flex items-center justify-center px-4 py-2 text-[#f9eded] text-base rounded-md transition-all duration-300 ${isDisabled ? "bg-[#AF1614] cursor-not-allowed" : "bg-[#AF1614]"
                         }`}
                     disabled={isDisabled}
                 >

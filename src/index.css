@@ -1,11 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
 
+
 * {
-  font-family: monospace;
+  /* font-family: "Josefin Sans", serif; */
+  font-family: "Ubuntu", serif;
+  /* font-family: "Exo 2", serif; */
+  /* font-family: "Sixtyfour Convergence", serif; */
+  /* font-family: "Play", serif; */
+  /* font-family: "Questrial", serif; */
+  /* font-family: "Be Vietnam Pro", serif; */
+   /* font-family: "Cinzel", serif; */
+/* font-family: "Exo", serif; */
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.5px;
+
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -42,6 +67,7 @@
 .chat-window {
   animation: blurIn 0.5s ease-out;
   transform-origin: bottom right;
+  background: #f9eded;
 }
 
 @keyframes blurIn {
@@ -81,8 +107,8 @@
 .typing-indicator {
   display: flex;
   gap: 4px;
-  padding: 4px 8px;
-  /* background: rgba(171, 37, 44, 0.1); */
+  padding: 10px 8px;
+  background: #fbe5e5;
   border-radius: 12px;
 }
 

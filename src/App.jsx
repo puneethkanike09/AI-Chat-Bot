@@ -6,18 +6,25 @@ import { MdMessage } from "react-icons/md";
 const App = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
-  ]);
+  const [messages, setMessages] = useState([]); // Start with empty messages
 
   const toggleChat = () => {
     if (isChatOpen) {
+      // Closing the chat
       setIsClosing(true);
       setIsChatOpen(false);
       setTimeout(() => {
         setIsClosing(false);
+        // Clear session and reset messages
+        // sessionStorage.removeItem('chat_user_id');
+        // setMessages([]);
       }, 500);
     } else {
+      // Opening the chat
+      const newUserId = crypto.randomUUID(); // Generate new user_id
+      sessionStorage.setItem('chat_user_id', newUserId);
+      // Initialize with bot's first message
+      setMessages([{ id: 1, text: "Hello! How can I assist you today?", sender: "bot" }]);
       setIsChatOpen(true);
       setIsClosing(false);
     }

@@ -23,26 +23,27 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
     };
 
     const sendMessage = async (text) => {
-        // Append the user's message.
-        const newUserMessage = {
-            id: crypto.randomUUID(),
-            text,
-            sender: "user",
-        };
-        setMessages((prev) => [...prev, newUserMessage]);
+        const userId = sessionStorage.getItem('chat_user_id');
+        if (!userId) {
+            // Handle missing user_id (session expired)
+            const errorMessage = {
+                id: crypto.randomUUID(),
+                text: "Session expired. Please reopen the chat.",
+                sender: "bot",
+            };
+            setMessages((prev) => [...prev, errorMessage]);
+            return;
+        }
+        setMessages((prev) => [...prev, { id: crypto.randomUUID(), text, sender: "user" }]);
         setIsProcessing(true);
 
         // Generate a random user ID. For example, using a random number.
-        const randomUserId = `user_${Math.floor(Math.random() * 10000)}`;
 
         try {
             const response = await fetch("http://54.173.172.35:8000/chat", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                // Pass the message and generated user_id in the request body.
-                body: JSON.stringify({ message: text, user_id: randomUserId }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: text, user_id: userId }),
             });
 
             if (!response.ok) {

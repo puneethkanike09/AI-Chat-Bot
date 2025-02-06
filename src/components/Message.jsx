@@ -37,7 +37,7 @@ const Message = ({ message }) => {
                     {message.text}
                 </ReactMarkdown>
 
-                {isBot && message.suggested_products && (
+                {isBot && message.suggested_products?.length > 0 && (
                     <div className="mt-4">
                         <h4 className="font-bold mb-2">Suggested Products</h4>
                         <div className="space-y-3">
@@ -72,7 +72,8 @@ const Message = ({ message }) => {
                     </div>
                 )}
 
-                {isBot && message.promotions && (
+
+                {isBot && message.promotions?.length > 0 && (
                     <div className="mt-4">
                         <h4 className="font-bold mb-2">Promotions</h4>
                         <div className="space-y-3">

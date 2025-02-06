@@ -33,7 +33,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
         setIsProcessing(true);
 
         // Generate a random user ID. For example, using a random number.
-        // const randomUserId = `user_${Math.floor(Math.random() * 10000)}`;
+        const randomUserId = `user_${Math.floor(Math.random() * 10000)}`;
 
         try {
             const response = await fetch("http://54.173.172.35:8000/chat", {
@@ -42,7 +42,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
                     "Content-Type": "application/json",
                 },
                 // Pass the message and generated user_id in the request body.
-                body: JSON.stringify({ message: text, user_id: "user_12" }),
+                body: JSON.stringify({ message: text, user_id: randomUserId }),
             });
 
             if (!response.ok) {

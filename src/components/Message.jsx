@@ -5,9 +5,7 @@ const Message = ({ message }) => {
     const isBot = message.sender === "bot";
 
     return (
-        <div
-            className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`}
-        >
+        <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`}>
             <div
                 className={`px-5 py-3 max-w-[75%] text-sm ${isBot
                     ? "bg-stone-50 text-black rounded-br-3xl rounded-bl-3xl rounded-tr-3xl"
@@ -17,12 +15,14 @@ const Message = ({ message }) => {
                 <ReactMarkdown
                     components={{
                         img: ({ node, alt, src, ...props }) => (
-                            <img
-                                alt={alt}
-                                src={src}
-                                className="max-w-full h-auto my-2 rounded-lg border"
-                                {...props}
-                            />
+                            <a href={src} target="_blank" rel="noopener noreferrer">
+                                <img
+                                    alt={alt}
+                                    src={src}
+                                    className="max-w-full h-auto my-2 rounded-lg border"
+                                    {...props}
+                                />
+                            </a>
                         ),
                         p: ({ node, ...props }) => <p className="mb-2" {...props} />,
                         strong: ({ node, children, ...props }) => (
@@ -37,7 +37,6 @@ const Message = ({ message }) => {
                     {message.text}
                 </ReactMarkdown>
 
-                {/* Rest of the component remains the same */}
                 {isBot && message.suggested_products && (
                     <div className="mt-4">
                         <h4 className="font-bold mb-2">Suggested Products</h4>
@@ -45,14 +44,23 @@ const Message = ({ message }) => {
                             {message.suggested_products.map((product) => (
                                 <div
                                     key={product.id}
-                                    className="border p-2 rounded-md flex flex-col"
+                                    className="p-2 rounded-md flex flex-col bg-[#f9eded]"
                                 >
                                     <div className="flex items-center gap-2">
-                                        <img
-                                            src={product.photo}
-                                            alt={product.name}
-                                            className="w-12 h-12 object-cover rounded"
-                                        />
+                                        <div className="w-16 h-14 flex-shrink-0">
+                                            <a
+                                                href={product.photo}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="block w-full h-full"
+                                            >
+                                                <img
+                                                    src={product.photo}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover rounded"
+                                                />
+                                            </a>
+                                        </div>
                                         <span className="font-semibold">{product.name}</span>
                                     </div>
                                     <p className="text-xs mt-1">
@@ -69,10 +77,7 @@ const Message = ({ message }) => {
                         <h4 className="font-bold mb-2">Promotions</h4>
                         <div className="space-y-3">
                             {message.promotions.map((promo) => (
-                                <div
-                                    key={promo.id}
-                                    className="border p-2 rounded-md"
-                                >
+                                <div key={promo.id} className="p-2 rounded-md bg-[#f9eded]">
                                     <div className="font-semibold">{promo.title}</div>
                                     <p className="text-xs">{promo.description}</p>
                                     <p className="text-xs italic">Terms: {promo.terms}</p>

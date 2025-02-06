@@ -3,78 +3,6 @@ import PropTypes from "prop-types";
 import Message from "./Message";
 import InputBox from "./InputBox";
 
-// Simulate an API call that returns the response object after a delay.
-const simulateApiResponse = (userText) => {
-    // In a real application, you’d use fetch/axios here.
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            // Sample API response (could be dynamically generated based on userText)
-            resolve({
-                response:
-                    "<think>\nOkay, the user asked, \"Today gold price.\" I need to respond with the current rate. ...\n</think>\n\nHello! Today's gold rate is ₹7905.0 per gram. How can I assist you with our beautiful jewelry collection today?\n\nHere are two stunning pieces you might love:\n\n1. **18KT 38GM ROSEGOLD NECKLACE**\n   - Category: Necklace Stone\n   - Weight: 37.43g\n   - Price: ₹0.00\n   - Image: [Rose Gold Necklace](https://sourcecatalogmuliya.s3.amazonaws.com/muliya_167671084452207382111129.JPG)\n   - A elegant rose gold necklace with a delicate design, perfect for everyday wear.\n\n2. **20GM ROSE GOLD CHAIN**\n   - Category: Chains\n   - Weight: 21.53g\n   - Price: ₹0.00\n   - Image: [Rose Gold Chain](https://sourcecatalogmuliya.s3.amazonaws.com/muliya_1657701753419141480135.JPG)\n   - A sleek and stylish rose gold chain, ideal for gifting or self-use.\n\nWe also have a special offer for first-time buyers: zero making charges on gold jewelry and a free gold coin on purchases above ₹100,000!\n\nWould you like to explore more or visit our store?",
-                user_id: "user_38",
-                session_id: "f2b026f4-4582-4269-9dcc-d0de6de4789a",
-                suggested_products: [
-                    {
-                        id: 5686,
-                        name: "18KT 38GM ROSEGOLD NECKLACE",
-                        branch: "belthangady",
-                        group: "NECKLACE STONE",
-                        gross_weight: "37.43",
-                        net_weight: "33.43",
-                        stone_weight: "4",
-                        stone_type: "white",
-                        calculated_price: 0,
-                        photo:
-                            "https://sourcecatalogmuliya.s3.amazonaws.com/muliya_167671084452207382111129.JPG",
-                        hd_photo:
-                            "https://sourcecatalogmuliya.s3.amazonaws.com/muliya_167671084452207382111129.JPG",
-                        tags:
-                            "18 Kt, Ladies, Bombay, Rose Gold, Handmade, Machine Made, Solid, Occassional Wear, White AD, Stone, Necklace, Chokar, Adjustable Ring, U Necklace, Neck Jewels, Broad Necklace",
-                    },
-                    {
-                        id: 6986,
-                        name: "20GM ROSE GOLD CHAIN",
-                        branch: "puttur",
-                        group: "CHAINS",
-                        gross_weight: "21.53",
-                        net_weight: "21.53",
-                        stone_weight: "0",
-                        stone_type: "-",
-                        calculated_price: 0,
-                        photo:
-                            "https://sourcecatalogmuliya.s3.amazonaws.com/muliya_1657701753419141480135.JPG",
-                        hd_photo:
-                            "https://sourcecatalogmuliya.s3.amazonaws.com/muliya_1657701753419141480135.JPG",
-                        tags:
-                            "22 Kt, Gents, Ladies, Kids, Bombay, Casting, Machine Made, Solid, Occassional Wear, Chain, Plain , Rhodium Colour, Neck Jewels, Light Weight, Fancy Chain",
-                    },
-                ],
-                relevant_promotions: [
-                    {
-                        id: "FIRSTTIME",
-                        title: "First-Time Buyer Special",
-                        description:
-                            "Zero making charges on gold jewelry for first-time customers. Free gold coin on purchases above ₹100,000.",
-                        validity: "Ongoing",
-                        terms: "Valid ID proof required for first-time verification",
-                        type: "regular",
-                    },
-                    {
-                        id: "GOLDCLUB",
-                        title: "Gold Club Member Benefits",
-                        description:
-                            "Exclusive 10% discount on making charges, free jewelry insurance for 1 year, priority customer service",
-                        validity: "Annual membership benefits",
-                        terms: "Available for Gold Club members only. Annual membership fee applies.",
-                        type: "membership",
-                    },
-                ],
-            });
-        }, 2000); // simulate 2 seconds delay
-    });
-};
-
 const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
     const [isProcessing, setIsProcessing] = useState(false);
     const chatRef = useRef(null);
@@ -87,18 +15,10 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
         }
     }, [messages]);
 
-    // Remove content inside <think>...</think>
-    // Chatbot.jsx
+    // Remove content inside <think>...</think> and adjust image markdown formatting.
     const cleanResponseText = (text) => {
-        // Remove think block
         let cleaned = text.replace(/<think>[\s\S]*?<\/think>/, "");
-
-        // Convert "Image: [text](url)" to "![text](url)"
-        cleaned = cleaned.replace(
-            /Image: \[(.*?)\]\((.*?)\)/g,
-            "![$1]($2)"
-        );
-
+        cleaned = cleaned.replace(/Image: \[(.*?)\]\((.*?)\)/g, "![$1]($2)");
         return cleaned.trim();
     };
 
@@ -112,9 +32,24 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
         setMessages((prev) => [...prev, newUserMessage]);
         setIsProcessing(true);
 
+        // Generate a random user ID. For example, using a random number.
+        // const randomUserId = `user_${Math.floor(Math.random() * 10000)}`;
+
         try {
-            // Simulate API call
-            const apiData = await simulateApiResponse(text);
+            const response = await fetch("http://54.173.172.35:8000/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // Pass the message and generated user_id in the request body.
+                body: JSON.stringify({ message: text, user_id: "user_12" }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+
+            const apiData = await response.json();
 
             // Process the API response: remove <think> block.
             const cleanedText = cleanResponseText(apiData.response);

@@ -40,7 +40,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
         // Generate a random user ID. For example, using a random number.
 
         try {
-            const response = await fetch("http://muliyachat.underdev.link:8000/chat", {
+            const response = await fetch("https://muliyachat.underdev.link:8000/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: text, user_id: userId }),

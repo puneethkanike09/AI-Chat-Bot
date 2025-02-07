@@ -4,7 +4,7 @@ import { IoSend } from "react-icons/io5";
 
 const InputBox = ({ onSendMessage, isDisabled }) => {
     const [input, setInput] = useState("");
-    const maxLength = 100;
+    const maxLength = 500;
 
     const handleSend = (e) => {
         e.preventDefault();

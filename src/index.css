@@ -38,12 +38,12 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #ab252c;
+  background: transparent;
   border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #911f25;
+  background: transparent
 }
 
 

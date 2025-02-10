@@ -37,10 +37,8 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
         setMessages((prev) => [...prev, { id: crypto.randomUUID(), text, sender: "user" }]);
         setIsProcessing(true);
 
-        // Generate a random user ID. For example, using a random number.
-
         try {
-            const response = await fetch("https://muliyachat.underdev.link:8000/chat", {
+            const response = await fetch("https://muliyachat.underdev.link/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: text, user_id: userId }),
@@ -92,7 +90,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
 
     return (
         <div
-            className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[600px] bg-white rounded-xl flex flex-col overflow-hidden ${className}`}
+            className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[700px] sm:h-[600px] bg-white rounded-xl flex flex-col overflow-hidden ${className}`}
         >
             <div className="text-white bg-[#AF1614] p-4 flex items-center rounded-br-xl rounded-bl-xl">
                 <div className="flex items-center space-x-2">

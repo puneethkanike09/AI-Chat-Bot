@@ -23,17 +23,9 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
     };
 
     const sendMessage = async (text) => {
-        const userId = sessionStorage.getItem('chat_user_id');
-        if (!userId) {
-            // Handle missing user_id (session expired)
-            const errorMessage = {
-                id: crypto.randomUUID(),
-                text: "Session expired. Please reopen the chat.",
-                sender: "bot",
-            };
-            setMessages((prev) => [...prev, errorMessage]);
-            return;
-        }
+        const userId = localStorage.getItem('chat_user_id');
+        const sessionId = sessionStorage.getItem('chat_session_id');
+
         setMessages((prev) => [...prev, { id: crypto.randomUUID(), text, sender: "user" }]);
         setIsProcessing(true);
 
@@ -41,7 +33,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
             const response = await fetch("https://muliyachat.underdev.link/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: text, user_id: userId }),
+                body: JSON.stringify({ message: text, user_id: userId, session_id: sessionId }),
             });
 
             if (!response.ok) {
@@ -49,6 +41,14 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
             }
 
             const apiData = await response.json();
+
+            // Store the user ID and session ID if they are returned from the backend
+            if (apiData.user_id) {
+                localStorage.setItem('chat_user_id', apiData.user_id);
+            }
+            if (apiData.session_id) {
+                sessionStorage.setItem('chat_session_id', apiData.session_id);
+            }
 
             // Process the API response: remove <think> block.
             const cleanedText = cleanResponseText(apiData.response);
@@ -76,6 +76,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
             setIsProcessing(false);
         }
     };
+
 
     // A simple typing indicator component.
     const TypingIndicator = () => (

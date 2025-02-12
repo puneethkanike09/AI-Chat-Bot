@@ -25,16 +25,17 @@ const App = () => {
       // Open chat only if no session exists
       let existingUserId = sessionStorage.getItem("chat_user_id");
       if (!existingUserId) {
-        const newUserId = crypto.randomUUID();
-        sessionStorage.setItem("chat_user_id", newUserId);
+        // const newUserId = crypto.randomUUID();
+        // sessionStorage.setItem("chat_user_id", newUserId);
         setMessages([
-          { id: 1, text: "Hello! How can I assist you today?", sender: "bot" },
+          { id: 1, text: "Namaste🙏 I am Muliya Agent. How can I assist you today?", sender: "bot" },
         ]);
       }
       setIsChatOpen(true);
       setIsClosing(false);
     }
   };
+
 
   return (
     <div>

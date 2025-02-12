@@ -14,7 +14,7 @@ const Message = ({ message }) => {
             >
                 <ReactMarkdown
                     components={{
-                        img: ({ node, alt, src, ...props }) => (
+                        img: ({ alt, src, ...props }) => (
                             <a href={src} target="_blank" rel="noopener noreferrer">
                                 <img
                                     alt={alt}
@@ -24,8 +24,8 @@ const Message = ({ message }) => {
                                 />
                             </a>
                         ),
-                        p: ({ node, ...props }) => <p className="mb-2" {...props} />,
-                        strong: ({ node, children, ...props }) => (
+                        p: ({ ...props }) => <p className="mb-2" {...props} />,
+                        strong: ({ children, ...props }) => (
                             <div className="mt-8">
                                 <strong {...props} className="block font-bold">
                                     {children}

@@ -1,8 +1,47 @@
 import PropTypes from "prop-types";
 import ReactMarkdown from "react-markdown";
+import { useState } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const Message = ({ message }) => {
     const isBot = message.sender === "bot";
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [expandedProducts, setExpandedProducts] = useState(false);
+    const [expandedPromotions, setExpandedPromotions] = useState(true);
+
+    const handleImageLoad = () => {
+        setImageLoaded(true);
+    };
+
+    const renderers = {
+        p: ({ children }) => <p className="mb-2">{children}</p>,
+        strong: ({ children }) => (
+            <strong className="block font-bold mt-8">{children}</strong>
+        ),
+        img: ({ alt, src }) => (
+            <img
+                src={src}
+                alt={alt}
+                className="max-w-xs h-auto my-2 rounded-lg border"
+                onLoad={handleImageLoad}
+            />
+        ),
+        a: ({ href, children }) => {
+            if (href.startsWith("https://")) {
+                return (
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                        <img
+                            src={href}
+                            alt={children}
+                            className="max-w-xs h-auto my-2 rounded-lg border"
+                            onLoad={handleImageLoad}
+                        />
+                    </a>
+                );
+            }
+            return <a href={href}>{children}</a>;
+        },
+    };
 
     return (
         <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`}>
@@ -12,79 +51,61 @@ const Message = ({ message }) => {
                     : "bg-stone-50 text-[#AF1614] rounded-bl-3xl rounded-tl-3xl rounded-br-3xl"
                     }`}
             >
-                <ReactMarkdown
-                    components={{
-                        img: ({ alt, src, ...props }) => (
-                            <a href={src} target="_blank" rel="noopener noreferrer">
-                                <img
-                                    alt={alt}
-                                    src={src}
-                                    className="max-w-full h-auto my-2 rounded-lg border"
-                                    {...props}
-                                />
-                            </a>
-                        ),
-                        p: ({ ...props }) => <p className="mb-2" {...props} />,
-                        strong: ({ children, ...props }) => (
-                            <div className="mt-8">
-                                <strong {...props} className="block font-bold">
-                                    {children}
-                                </strong>
-                            </div>
-                        ),
-                    }}
-                >
+                <ReactMarkdown components={renderers}>
                     {message.text}
                 </ReactMarkdown>
 
                 {isBot && message.suggested_products?.length > 0 && (
                     <div className="mt-4">
-                        <h4 className="font-bold mb-2">Suggested Products</h4>
-                        <div className="space-y-3">
-                            {message.suggested_products.map((product) => (
-                                <div
-                                    key={product.id}
-                                    className="p-2 rounded-md flex flex-col bg-[#f9eded]"
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-16 h-14 flex-shrink-0">
-                                            <a
-                                                href={product.photo}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="block w-full h-full"
-                                            >
-                                                <img
-                                                    src={product.photo}
-                                                    alt={product.name}
-                                                    className="w-full h-full object-cover rounded"
-                                                />
-                                            </a>
-                                        </div>
-                                        <span className="font-semibold">{product.name}</span>
-                                    </div>
-                                    <p className="text-xs mt-1">
-                                        Category: {product.group} | Weight: {product.gross_weight}g
-                                    </p>
-                                </div>
-                            ))}
+                        <div
+                            className="flex items-center justify-between cursor-pointer"
+                            onClick={() => setExpandedProducts(!expandedProducts)}
+                        >
+                            <h4 className="font-bold mb-2">Suggested Products</h4>
+                            {expandedProducts ? <FaChevronUp /> : <FaChevronDown />}
                         </div>
+                        {expandedProducts && (
+                            <div className="flex space-x-3 overflow-x-auto custom-scrollbar transition-max-height duration-300 ease-in-out">
+                                {message.suggested_products.map((product) => (
+                                    <div
+                                        key={product.id}
+                                        className="relative min-w-[150px] h-[200px] rounded-md overflow-hidden bg-cover bg-center"
+                                        style={{ backgroundImage: `url(${product.photo})` }}
+                                    >
+                                        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 p-2 rounded-md">
+                                            <p className="text-white text-xs text-center">
+                                                Weight: {product.ntWeight}g
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 
-
                 {isBot && message.promotions?.length > 0 && (
                     <div className="mt-4">
-                        <h4 className="font-bold mb-2">Promotions</h4>
-                        <div className="space-y-3">
-                            {message.promotions.map((promo) => (
-                                <div key={promo.id} className="p-2 rounded-md bg-[#f9eded]">
-                                    <div className="font-semibold">{promo.title}</div>
-                                    <p className="text-xs">{promo.description}</p>
-                                    <p className="text-xs italic">Terms: {promo.terms}</p>
-                                </div>
-                            ))}
+                        <div
+                            className="flex items-center justify-between cursor-pointer"
+                            onClick={() => setExpandedPromotions(!expandedPromotions)}
+                        >
+                            <h4 className="font-bold mb-2">Promotions</h4>
+                            {expandedPromotions ? <FaChevronUp /> : <FaChevronDown />}
                         </div>
+                        {expandedPromotions && (
+                            <div className="space-y-3 transition-max-height duration-300 ease-in-out">
+                                {message.promotions.map((promo) => (
+                                    <div key={promo.id} className="p-2 rounded-md bg-[#f9eded]">
+                                        <div className="font-semibold">{promo.title}</div>
+                                        <p className="text-xs">{promo.description}</p>
+                                        <p className="text-xs italic">Terms: {promo.terms}</p>
+                                        <p className="text-xs">Validity: {promo.validity}</p>
+                                        <p className="text-xs">Type: {promo.type}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

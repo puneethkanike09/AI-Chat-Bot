@@ -31,6 +31,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
 
         try {
             const response = await fetch("https://muliyachat.underdev.link/chat", {
+                // const response = await fetch("http://0.0.0.0:8000/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: text, user_id: userId, session_id: sessionId }),
@@ -74,6 +75,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
             setMessages((prev) => [...prev, errorMessage]);
         } finally {
             setIsProcessing(false);
+            document.querySelector('input[type="text"]').focus();
         }
     };
 

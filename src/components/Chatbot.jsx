@@ -95,7 +95,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages }) => {
         <div
             className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[700px] sm:h-[600px] bg-white rounded-xl flex flex-col overflow-hidden ${className}`}
         >
-            <div className="text-white bg-[#AF1614] p-4 flex items-center rounded-br-xl rounded-bl-xl">
+            <div className="text-white bg-[#AB252C] p-4 flex items-center rounded-br-xl rounded-bl-xl">
                 <div className="flex items-center space-x-2">
                     <img
                         className="w-16"

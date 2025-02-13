@@ -5,12 +5,12 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const Message = ({ message }) => {
     const isBot = message.sender === "bot";
-    const [imageLoaded, setImageLoaded] = useState(false);
+    // const [imageLoaded, setImageLoaded] = useState(false);
     const [expandedProducts, setExpandedProducts] = useState(false);
     const [expandedPromotions, setExpandedPromotions] = useState(true);
 
     const handleImageLoad = () => {
-        setImageLoaded(true);
+        // setImageLoaded(true);
     };
 
     const renderers = {

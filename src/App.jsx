@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Chatbot from "./components/Chatbot";
-import { AiOutlineClose } from "react-icons/ai";
 import { MdMessage } from "react-icons/md";
 
 const App = () => {
@@ -8,7 +7,6 @@ const App = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [messages, setMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-
 
   useEffect(() => {
     const userId = localStorage.getItem('chat_user_id');
@@ -20,7 +18,6 @@ const App = () => {
     }
   }, []);
 
-
   useEffect(() => {
     const userId = localStorage.getItem('chat_user_id');
     if (userId) {
@@ -28,45 +25,38 @@ const App = () => {
     }
   }, [messages]);
 
-  const toggleChat = () => {
-    if (isChatOpen) {
-      setIsClosing(true);
-      setIsChatOpen(false);
-      setTimeout(() => setIsClosing(false), 500);
-    } else {
-      const existingUserId = localStorage.getItem("chat_user_id");
-      if (!existingUserId) {
-        const newUserId = crypto.randomUUID();
-        localStorage.setItem("chat_user_id", newUserId);
-      }
-
-      if (messages.length === 0 || messages[0].text !== "Welcome to Muliya 🙏, how can I help you today?") {
-        setMessages([
-          { id: crypto.randomUUID(), text: "Welcome to Muliya 🙏, how can I help you today?", sender: "bot" },
-          ...messages,
-        ]);
-      }
-
-      setIsChatOpen(true);
-      setIsClosing(false);
+  const openChat = () => {
+    const existingUserId = localStorage.getItem("chat_user_id");
+    if (!existingUserId) {
+      const newUserId = crypto.randomUUID();
+      localStorage.setItem("chat_user_id", newUserId);
     }
+
+    if (messages.length === 0 || messages[0].text !== "Welcome to Muliya 🙏, how can I help you today?") {
+      setMessages([
+        { id: crypto.randomUUID(), text: "Welcome to Muliya 🙏, how can I help you today?", sender: "bot" },
+        ...messages,
+      ]);
+    }
+
+    setIsChatOpen(true);
+    setIsClosing(false);
   };
 
   return (
     <div>
-      <button
-        className={`chat-button fixed bottom-5 z-10 right-5 bg-primary text-secondary rounded-full border-[2.5px] border-white focus:outline-none transition-all duration-500 w-14 h-14 flex items-center justify-center ${isChatOpen ? "opened" : ""
-          }`}
-        onClick={toggleChat}
-        aria-label={isChatOpen ? "Close Chat" : "Open Chat"}
-      >
-        <span
-          className={`chat-button-icon block ${isChatOpen ? "open" : "closed"
-            }`}
+      {!isChatOpen && (
+        <button
+          className={`chat-button fixed bottom-5 z-10 right-5 bg-primary text-secondary rounded-full focus:outline-none transition-all duration-500 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 sm:w-14 sm:h-14`}
+          onClick={openChat}
+          aria-label="Open Chat"
         >
-          {isChatOpen ? <AiOutlineClose size={20} /> : <MdMessage size={24} />}
-        </span>
-      </button>
+          <span className="chat-button-icon block">
+            <MdMessage className="md:text-2xl sm:text-xl text-xl" />
+          </span>
+        </button>
+      )}
+
 
       <div>
         {(isChatOpen || isClosing) && (
@@ -76,6 +66,8 @@ const App = () => {
             setMessages={setMessages}
             isProcessing={isProcessing}
             setIsProcessing={setIsProcessing}
+            setIsChatOpen={setIsChatOpen}
+            setIsClosing={setIsClosing}
           />
         )}
       </div>

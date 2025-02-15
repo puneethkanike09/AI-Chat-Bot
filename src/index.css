@@ -30,6 +30,7 @@ html {
 
 .message {
   animation: messageFadeIn 0.1s ease-out;
+  margin-bottom: 20px; /* Add margin to the bottom of each message */
 }
 
 @keyframes messageFadeIn {
@@ -78,14 +79,32 @@ html {
   }
 }
 
+.typing-indicator-container {
+    background: white;
+    padding: 10px;
+    margin-top: 20px; /* Ensure there's space above the typing indicator */
+    margin-bottom: 20px;
+}
+
+.mobile-chat {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0;
+}
+
+@media (max-width: 768px) {
+    .chat-window {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0;
+    }
+}
+
 .typing-indicator {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px; 
-  padding: 8px 12px; 
-  background-color: white; 
-  border-radius: 16px; 
+  gap: 4px;
+  background-color: white;
+  border-radius: 16px;
   animation: slideUp 1s ease-in-out;
 }
 
@@ -103,7 +122,7 @@ html {
 .typing-circle {
   width: 5px;
   height: 5px;
-  background-color: #ab252c; 
+  background-color: #ab252c;
   border-radius: 50%;
   animation: typingBounce 1s infinite;
 }
@@ -121,10 +140,9 @@ html {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px); 
+    transform: translateY(-8px);
   }
 }
-
 
 .chat-button {
   animation: blobber 15s ease-in-out infinite;

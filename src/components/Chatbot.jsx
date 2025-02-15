@@ -2,57 +2,33 @@ import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Message from "./Message";
 import InputBox from "./InputBox";
-import { funFacts } from "../data/typingData";
-import { processingMessages } from "../data/typingData";
-import { FaChevronDown } from "react-icons/fa";
+import TypingIndicator from "./TypingIndicator";
+import { FaChevronDown, FaTimes } from "react-icons/fa";
 
-const TypingIndicator = () => {
-    const [currentQuote, setCurrentQuote] = useState('');
-    const [processingMessage, setProcessingMessage] = useState('');
-    const [showProcessing, setShowProcessing] = useState(false);
-
-    const getRandomFact = () => funFacts[Math.floor(Math.random() * funFacts.length)];
-    const getRandomProcessingMessage = () => processingMessages[Math.floor(Math.random() * processingMessages.length)];
-
-    useEffect(() => {
-        setCurrentQuote(getRandomFact());
-        setProcessingMessage(getRandomProcessingMessage());
-
-        const processingInterval = setInterval(() => {
-            setShowProcessing(true);
-
-            setTimeout(() => {
-                setShowProcessing(false);
-                setCurrentQuote(getRandomFact());
-                setProcessingMessage(getRandomProcessingMessage());
-            }, 10000);
-        }, 10000);
-
-        return () => {
-            clearInterval(processingInterval);
-        };
-    }, []);
-
-    return (
-        <div className="flex flex-col items-start">
-            <div className="text-gray-500 text-sm italic">
-                {showProcessing ? processingMessage : currentQuote}
-            </div>
-            <div className=" px-2 py-2  rounded-full w-fit">
-                <div className="typing-indicator">
-                    <div className="typing-circle"></div>
-                    <div className="typing-circle"></div>
-                    <div className="typing-circle"></div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessing, setIsProcessing }) => {
+const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessing, setIsProcessing, setIsChatOpen, setIsClosing }) => {
     const chatRef = useRef(null);
     const inputRef = useRef(null);
     const [isAtBottom, setIsAtBottom] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+
+    const scrollToBottom = (behavior = 'smooth') => {
+        if (chatRef.current) {
+            chatRef.current.scrollTo({
+                top: chatRef.current.scrollHeight,
+                behavior
+            });
+        }
+    };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const chatContainer = chatRef.current;
@@ -70,33 +46,30 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
         return () => chatContainer.removeEventListener('scroll', handleScroll);
     }, []);
 
-
-
     useEffect(() => {
-        const chat = chatRef.current;
-        if (chat) {
-            const lastMessage = messages[messages.length - 1];
-            if (lastMessage?.sender === "bot") {
-                setTimeout(() => {
-                    const messageElements = chat.querySelectorAll('[data-sender]');
-                    if (messageElements.length > 0) {
-                        const lastElement = messageElements[messageElements.length - 1];
-                        if (lastElement.dataset.sender === "bot") {
-                            lastElement.scrollIntoView({ block: "start", behavior: "smooth" });
-                        }
-                    }
-                }, 0);
-                inputRef.current?.focus();
-            } else {
-                chat.scrollTo({ top: chat.scrollHeight, behavior: "smooth" });
+        if (!chatRef.current) return;
+
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage?.sender === "bot") {
+            const messageElements = chatRef.current.querySelectorAll('[data-sender]');
+            if (messageElements.length > 0) {
+                const lastElement = messageElements[messageElements.length - 1];
+                if (lastElement.dataset.sender === "bot") {
+                    lastElement.scrollIntoView({ block: "start", behavior: "smooth" });
+                    inputRef.current?.focus();
+                }
             }
-            // Update isAtBottom after scroll
-            const isBottom = chat.scrollHeight - (chat.scrollTop + chat.clientHeight) < 50;
-            setIsAtBottom(isBottom);
+        } else {
+            scrollToBottom();
         }
     }, [messages]);
 
-
+    // New effect to handle typing indicator visibility
+    useEffect(() => {
+        if (isProcessing) {
+            scrollToBottom();
+        }
+    }, [isProcessing]);
 
     const cleanResponseText = (text) => {
         let cleaned = text.replace(/<think>[\s\S]*?<\/think>/, "");
@@ -155,11 +128,17 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
         }
     };
 
+    const closeChat = () => {
+        setIsClosing(true);
+        setIsChatOpen(false);
+        setTimeout(() => setIsClosing(false), 500);
+    };
+
     return (
         <div
-            className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[550px] md:w-[400px] md:h-[550px] lg:w-[400px] lg:h-[550px] xl:w-[600px] xl:h-[550px] 2xl:w-[600px] 2xl:h-[550px] bg-secondary rounded-xl flex flex-col overflow-hidden ${className}`}
+            className={`fixed bottom-0 right-0 md:bottom-5 md:right-5 w-full h-full sm:w-[400px] sm:h-[550px] md:w-[600px] md:h-[550px] lg:w-[600px] lg:h-[550px] xl:w-[600px] xl:h-[550px] 2xl:w-[600px] 2xl:h-[550px] bg-secondary rounded-xl flex flex-col overflow-hidden ${className} ${isMobile ? 'mobile-chat' : ''}`}
         >
-            <div className="text-white bg-primary p-4 flex items-center rounded-br-xl rounded-bl-xl">
+            <div className="text-white bg-primary p-4 flex items-center justify-between rounded-br-xl rounded-bl-xl">
                 <div className="flex items-center space-x-2">
                     <img
                         className="w-16"
@@ -167,29 +146,29 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
                         alt="Chatbot Logo"
                     />
                 </div>
+                <button
+                    onClick={closeChat}
+                    className="text-white text-xl"
+                >
+                    <FaTimes />
+                </button>
             </div>
 
             <div ref={chatRef} className="flex-grow overflow-y-auto p-4 space-y-2 custom-scrollbar">
                 {messages.map((message) => (
                     <Message key={message.id} message={message} />
                 ))}
-                {isProcessing && <TypingIndicator />}
+                {isProcessing && <TypingIndicator onAppear={scrollToBottom} />}
             </div>
 
             {!isAtBottom && (
                 <button
-                    onClick={() => {
-                        chatRef.current.scrollTo({
-                            top: chatRef.current.scrollHeight,
-                            behavior: 'smooth'
-                        });
-                    }}
-                    className="absolute bottom-24 right-6 p-2 bg-white text-primary rounded-full  animate-pulse transition-all duration-500 z-50"
+                    onClick={() => scrollToBottom()}
+                    className="absolute bottom-24 right-6 p-2 bg-white text-primary rounded-full animate-pulse transition-all duration-500 z-50"
                 >
                     <FaChevronDown />
                 </button>
             )}
-
 
             <div className="shadow-lg">
                 <InputBox inputRef={inputRef} onSendMessage={sendMessage} isDisabled={isProcessing} />
@@ -204,6 +183,8 @@ Chatbot.propTypes = {
     setMessages: PropTypes.func.isRequired,
     isProcessing: PropTypes.bool.isRequired,
     setIsProcessing: PropTypes.func.isRequired,
+    setIsChatOpen: PropTypes.func.isRequired,
+    setIsClosing: PropTypes.func.isRequired,
 };
 
 export default Chatbot;

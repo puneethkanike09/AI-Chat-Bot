@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Message from "./Message";
 import InputBox from "./InputBox";
-import TypingIndicator from "./TypingIndicator";
 import { FaChevronDown, FaTimes } from "react-icons/fa";
+import TypingIndicator from "./TypingIndicator";
+
 
 const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessing, setIsProcessing, setIsChatOpen, setIsClosing }) => {
     const chatRef = useRef(null);
@@ -63,13 +64,6 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
             scrollToBottom();
         }
     }, [messages]);
-
-    // New effect to handle typing indicator visibility
-    useEffect(() => {
-        if (isProcessing) {
-            scrollToBottom();
-        }
-    }, [isProcessing]);
 
     const cleanResponseText = (text) => {
         let cleaned = text.replace(/<think>[\s\S]*?<\/think>/, "");
@@ -158,7 +152,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
                 {messages.map((message) => (
                     <Message key={message.id} message={message} />
                 ))}
-                {isProcessing && <TypingIndicator onAppear={scrollToBottom} />}
+                {isProcessing && <TypingIndicator />} {/* Typing Indicator */}
             </div>
 
             {!isAtBottom && (

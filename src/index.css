@@ -7,6 +7,9 @@ html {
   scroll-behavior: smooth;
 }
 
+
+
+
 * {
   font-family: "Ubuntu", serif;
   font-optical-sizing: auto;
@@ -79,12 +82,6 @@ html {
   }
 }
 
-.typing-indicator-container {
-    background: white;
-    padding: 10px;
-    margin-top: 20px; /* Ensure there's space above the typing indicator */
-    margin-bottom: 20px;
-}
 
 .mobile-chat {
     width: 100% !important;
@@ -100,13 +97,6 @@ html {
     }
 }
 
-.typing-indicator {
-  display: flex;
-  gap: 4px;
-  background-color: white;
-  border-radius: 16px;
-  animation: slideUp 1s ease-in-out;
-}
 
 @keyframes slideUp {
   0% {
@@ -119,30 +109,7 @@ html {
   }
 }
 
-.typing-circle {
-  width: 5px;
-  height: 5px;
-  background-color: #ab252c;
-  border-radius: 50%;
-  animation: typingBounce 1s infinite;
-}
 
-.typing-circle:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing-circle:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes typingBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
 
 .chat-button {
   animation: blobber 15s ease-in-out infinite;
@@ -222,3 +189,28 @@ html {
 .chat-button-icon.closed {
   transform: rotate(0deg) scale(1);
 }
+
+
+
+@keyframes bounceDelay {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.bounce-1 {
+  animation: bounceDelay 1.2s infinite ease-in-out 0s;
+}
+.bounce-2 {
+  animation: bounceDelay 1.2s infinite ease-in-out 0.2s;
+}
+.bounce-3 {
+  animation: bounceDelay 1.2s infinite ease-in-out 0.4s;
+}
+
+
+
+

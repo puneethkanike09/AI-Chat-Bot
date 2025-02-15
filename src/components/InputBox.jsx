@@ -2,9 +2,9 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { IoSend } from "react-icons/io5";
 
-const InputBox = ({ onSendMessage, isDisabled }) => {
+const InputBox = ({ onSendMessage, isDisabled, inputRef }) => {
     const [input, setInput] = useState("");
-    const maxLength = 500;
+    const maxLength = 200;
 
     const handleSend = (e) => {
         e.preventDefault();
@@ -25,25 +25,26 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
         <div className="flex flex-col w-full">
             <form
                 onSubmit={handleSend}
-                className="flex items-center gap-3 px-4 py-3 rounded-tl-xl rounded-tr-xl bg-[#AB252C]"
+                className="flex items-center gap-3 px-4 py-3 rounded-tl-xl rounded-tr-xl bg-primary"
             >
                 <div className="flex-grow relative">
                     <input
+                        ref={inputRef}
                         type="text"
-                        className="w-full bg-[#AB252C] px-4 pr-16 py-2 text-sm text-[#f9eded] focus:outline-none focus:ring-1 focus:ring-[#AB252C] placeholder-white"
+                        className="w-full bg-primary px-4 pr-16 py-2 text-sm text-secondary focus:outline-none focus:ring-1 focus:ring-primary placeholder-white"
                         value={input}
                         onChange={handleInput}
                         disabled={isDisabled}
-                        placeholder="Type your text..."
+                        placeholder="Type your query..."
                         maxLength={maxLength}
                     />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#f9eded]/80 bg-[#AB252C] px-1">
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-secondary/80 bg-primary px-1">
                         {input.length}/{maxLength}
                     </div>
                 </div>
                 <button
                     type="submit"
-                    className={`flex items-center justify-center px-4 py-2 text-[#f9eded] text-base rounded-md transition-all duration-300 ${isDisabled ? "bg-[#AB252C] cursor-not-allowed" : "bg-[#AB252C]"
+                    className={`flex items-center justify-center px-4 py-2 text-secondary text-base rounded-md transition-all duration-300 ${isDisabled ? "bg-primary cursor-not-allowed" : "bg-primary"
                         }`}
                     disabled={isDisabled}
                 >
@@ -57,6 +58,7 @@ const InputBox = ({ onSendMessage, isDisabled }) => {
 InputBox.propTypes = {
     onSendMessage: PropTypes.func.isRequired,
     isDisabled: PropTypes.bool.isRequired,
+    inputRef: PropTypes.object.isRequired,
 };
 
 export default InputBox;

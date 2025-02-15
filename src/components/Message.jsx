@@ -1,16 +1,24 @@
 import PropTypes from "prop-types";
 import ReactMarkdown from "react-markdown";
-import { useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { useRef } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const Message = ({ message }) => {
     const isBot = message.sender === "bot";
-    // const [imageLoaded, setImageLoaded] = useState(false);
-    const [expandedProducts, setExpandedProducts] = useState(false);
-    const [expandedPromotions, setExpandedPromotions] = useState(true);
+    const productsRef = useRef(null);
 
     const handleImageLoad = () => {
-        // setImageLoaded(true);
+        // Handle image load if needed
+    };
+
+    const handleScroll = (direction) => {
+        if (productsRef.current) {
+            const scrollAmount = 50; // Adjust this value based on your design
+            productsRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth',
+            });
+        }
     };
 
     const renderers = {
@@ -19,12 +27,15 @@ const Message = ({ message }) => {
             <strong className="block font-bold mt-8">{children}</strong>
         ),
         img: ({ alt, src }) => (
-            <img
-                src={src}
-                alt={alt}
-                className="max-w-xs h-auto my-2 rounded-lg border"
-                onLoad={handleImageLoad}
-            />
+            <a href={src} target="_blank" rel="noopener noreferrer">
+                <img
+                    src={src}
+                    alt={alt}
+                    className="max-w-xs h-auto my-2 rounded-lg border cursor-pointer"
+                    style={{ width: '100px', height: 'auto' }}
+                    onLoad={handleImageLoad}
+                />
+            </a>
         ),
         a: ({ href, children }) => {
             if (href.startsWith("https://")) {
@@ -33,7 +44,8 @@ const Message = ({ message }) => {
                         <img
                             src={href}
                             alt={children}
-                            className="max-w-xs h-auto my-2 rounded-lg border"
+                            className="max-w-xs h-auto my-2 rounded-lg border cursor-pointer"
+                            style={{ width: '100px', height: 'auto' }}
                             onLoad={handleImageLoad}
                         />
                     </a>
@@ -44,11 +56,11 @@ const Message = ({ message }) => {
     };
 
     return (
-        <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`}>
+        <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`} data-sender={message.sender}>
             <div
                 className={`px-5 py-3 max-w-[75%] text-sm ${isBot
                     ? "bg-stone-50 text-black rounded-br-3xl rounded-bl-3xl rounded-tr-3xl"
-                    : "bg-stone-50 text-[#AF1614] rounded-bl-3xl rounded-tl-3xl rounded-br-3xl"
+                    : "bg-stone-50 text-primary rounded-bl-3xl rounded-tl-3xl rounded-br-3xl"
                     }`}
             >
                 <ReactMarkdown components={renderers}>
@@ -56,16 +68,21 @@ const Message = ({ message }) => {
                 </ReactMarkdown>
 
                 {isBot && message.suggested_products?.length > 0 && (
-                    <div className="mt-4">
-                        <div
-                            className="flex items-center justify-between cursor-pointer"
-                            onClick={() => setExpandedProducts(!expandedProducts)}
-                        >
+                    <div className="mt-4 relative">
+                        <div className="flex items-center justify-between cursor-pointer">
                             <h4 className="font-bold mb-2">Suggested Products</h4>
-                            {expandedProducts ? <FaChevronUp /> : <FaChevronDown />}
                         </div>
-                        {expandedProducts && (
-                            <div className="flex space-x-3 overflow-x-auto custom-scrollbar transition-max-height duration-300 ease-in-out">
+                        <div className="relative">
+                            <button
+                                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white/40 hover:bg-white/60 p-2 rounded-full shadow-md z-10"
+                                onClick={() => handleScroll('left')}
+                            >
+                                <FaChevronLeft />
+                            </button>
+                            <div
+                                ref={productsRef}
+                                className="flex space-x-3 overflow-x-auto custom-scrollbar transition-max-height duration-300 ease-in-out"
+                            >
                                 {message.suggested_products.map((product) => (
                                     <div
                                         key={product.id}
@@ -80,32 +97,30 @@ const Message = ({ message }) => {
                                     </div>
                                 ))}
                             </div>
-                        )}
+                            <button
+                                className="absolute right-0 top-1/2 transform -translate-y-1/2  bg-white/40 hover:bg-white/60 p-2 rounded-full shadow-md z-10"
+                                onClick={() => handleScroll('right')}
+                            >
+                                <FaChevronRight />
+                            </button>
+                        </div>
                     </div>
                 )}
 
                 {isBot && message.promotions?.length > 0 && (
                     <div className="mt-4">
-                        <div
-                            className="flex items-center justify-between cursor-pointer"
-                            onClick={() => setExpandedPromotions(!expandedPromotions)}
-                        >
-                            <h4 className="font-bold mb-2">Promotions</h4>
-                            {expandedPromotions ? <FaChevronUp /> : <FaChevronDown />}
+                        <h4 className="font-bold mb-2">Promotions</h4>
+                        <div className="space-y-3 transition-max-height duration-300 ease-in-out">
+                            {message.promotions.map((promo) => (
+                                <div key={promo.id} className="p-2 rounded-md bg-secondary">
+                                    <div className="font-semibold">{promo.title}</div>
+                                    <p className="text-xs">{promo.description}</p>
+                                    <p className="text-xs italic">Terms: {promo.terms}</p>
+                                    <p className="text-xs">Validity: {promo.validity}</p>
+                                    <p className="text-xs">Type: {promo.type}</p>
+                                </div>
+                            ))}
                         </div>
-                        {expandedPromotions && (
-                            <div className="space-y-3 transition-max-height duration-300 ease-in-out">
-                                {message.promotions.map((promo) => (
-                                    <div key={promo.id} className="p-2 rounded-md bg-[#f9eded]">
-                                        <div className="font-semibold">{promo.title}</div>
-                                        <p className="text-xs">{promo.description}</p>
-                                        <p className="text-xs italic">Terms: {promo.terms}</p>
-                                        <p className="text-xs">Validity: {promo.validity}</p>
-                                        <p className="text-xs">Type: {promo.type}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
                     </div>
                 )}
             </div>

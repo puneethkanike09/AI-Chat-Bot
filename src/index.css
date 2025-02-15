@@ -46,7 +46,6 @@ html {
 .chat-window {
   animation: blurIn 0.5s ease-out;
   transform-origin: bottom right;
-  background: #f9eded;
 }
 
 @keyframes blurIn {

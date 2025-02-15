@@ -13,7 +13,7 @@ const Message = ({ message }) => {
 
     const handleScroll = (direction) => {
         if (productsRef.current) {
-            const scrollAmount = 50; // Adjust this value based on your design
+            const scrollAmount = 172; // Adjust this value based on your design
             productsRef.current.scrollBy({
                 left: direction === 'left' ? -scrollAmount : scrollAmount,
                 behavior: 'smooth',
@@ -59,8 +59,8 @@ const Message = ({ message }) => {
         <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`} data-sender={message.sender}>
             <div
                 className={`px-5 py-3 max-w-[75%] text-sm ${isBot
-                    ? "bg-stone-50 text-black rounded-br-3xl rounded-bl-3xl rounded-tr-3xl"
-                    : "bg-stone-50 text-primary rounded-bl-3xl rounded-tl-3xl rounded-br-3xl"
+                    ? "bg-white text-black rounded-br-3xl rounded-bl-3xl rounded-tr-3xl"
+                    : "bg-white text-black rounded-bl-3xl rounded-tl-3xl rounded-br-3xl"
                     }`}
             >
                 <ReactMarkdown components={renderers}>
@@ -74,7 +74,7 @@ const Message = ({ message }) => {
                         </div>
                         <div className="relative">
                             <button
-                                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white/40 hover:bg-white/60 p-2 rounded-full shadow-md z-10"
+                                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white/40 hover:bg-white/60 p-2 rounded-full transition-all duration-300 shadow-md z-10"
                                 onClick={() => handleScroll('left')}
                             >
                                 <FaChevronLeft />
@@ -86,7 +86,7 @@ const Message = ({ message }) => {
                                 {message.suggested_products.map((product) => (
                                     <div
                                         key={product.id}
-                                        className="relative min-w-[150px] h-[200px] rounded-md overflow-hidden bg-cover bg-center"
+                                        className="relative min-w-[160px] h-[200px] rounded-md overflow-hidden bg-cover bg-center"
                                         style={{ backgroundImage: `url(${product.photo})` }}
                                     >
                                         <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 p-2 rounded-md">
@@ -98,7 +98,7 @@ const Message = ({ message }) => {
                                 ))}
                             </div>
                             <button
-                                className="absolute right-0 top-1/2 transform -translate-y-1/2  bg-white/40 hover:bg-white/60 p-2 rounded-full shadow-md z-10"
+                                className="absolute right-0 top-1/2 transform -translate-y-1/2  bg-white/40 transition-all duration-300 hover:bg-white/60 p-2 rounded-full shadow-md z-10"
                                 onClick={() => handleScroll('right')}
                             >
                                 <FaChevronRight />

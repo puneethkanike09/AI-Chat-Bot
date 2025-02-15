@@ -4,6 +4,7 @@ import Message from "./Message";
 import InputBox from "./InputBox";
 import { funFacts } from "../data/typingData";
 import { processingMessages } from "../data/typingData";
+import { FaChevronDown } from "react-icons/fa";
 
 const TypingIndicator = () => {
     const [currentQuote, setCurrentQuote] = useState('');
@@ -156,7 +157,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
 
     return (
         <div
-            className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[550px] md:w-[400px] md:h-[550px] lg:w-[400px] lg:h-[550px] xl:w-[600px] xl:h-[550px] 2xl:w-[600px] 2xl:h-[550px] bg-white rounded-xl flex flex-col overflow-hidden ${className}`}
+            className={`fixed bottom-16 right-10 w-[300px] h-[450px] sm:w-[400px] sm:h-[550px] md:w-[400px] md:h-[550px] lg:w-[400px] lg:h-[550px] xl:w-[600px] xl:h-[550px] 2xl:w-[600px] 2xl:h-[550px] bg-secondary rounded-xl flex flex-col overflow-hidden ${className}`}
         >
             <div className="text-white bg-primary p-4 flex items-center rounded-br-xl rounded-bl-xl">
                 <div className="flex items-center space-x-2">
@@ -183,22 +184,9 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
                             behavior: 'smooth'
                         });
                     }}
-                    className="absolute bottom-24 right-6 p-2 bg-primary text-white rounded-full shadow-lg hover:bg-primary-dark transition-colors z-50"
+                    className="absolute bottom-24 right-6 p-2 bg-white text-primary rounded-full  animate-pulse transition-all duration-500 z-50"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                        />
-                    </svg>
+                    <FaChevronDown />
                 </button>
             )}
 

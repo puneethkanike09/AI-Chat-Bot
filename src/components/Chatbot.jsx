@@ -5,12 +5,24 @@ import InputBox from "./InputBox";
 import { FaChevronDown, FaTimes } from "react-icons/fa";
 import TypingIndicator from "./TypingIndicator";
 
-
 const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessing, setIsProcessing, setIsChatOpen, setIsClosing }) => {
     const chatRef = useRef(null);
     const inputRef = useRef(null);
+    const sendSoundRef = useRef(new Audio("/assets/sounds/send.mp3"));
+    const receiveSoundRef = useRef(new Audio("/assets/sounds/receive.mp3"));
+    const prevMessagesLengthRef = useRef(messages.length);
     const [isAtBottom, setIsAtBottom] = useState(true);
     const [isMobile, setIsMobile] = useState(false);
+
+    // Initialize sound settings
+    useEffect(() => {
+        // Preload sounds
+        sendSoundRef.current.preload = "auto";
+        receiveSoundRef.current.preload = "auto";
+        // Set volumes
+        sendSoundRef.current.volume = 1;
+        receiveSoundRef.current.volume = 1;
+    }, []);
 
     const scrollToBottom = (behavior = 'smooth') => {
         if (chatRef.current) {
@@ -42,16 +54,24 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
         };
 
         chatContainer.addEventListener('scroll', handleScroll);
-        handleScroll(); // Initial check
+        handleScroll();
 
         return () => chatContainer.removeEventListener('scroll', handleScroll);
     }, []);
 
     useEffect(() => {
-        if (!chatRef.current) return;
+        if (!chatRef.current || messages.length === 0) return;
+
+        const isNewMessage = messages.length > prevMessagesLengthRef.current;
+        prevMessagesLengthRef.current = messages.length;
+
+        if (!isNewMessage) return; // Skip if it's not a new message
 
         const lastMessage = messages[messages.length - 1];
         if (lastMessage?.sender === "bot") {
+            // Play receive sound only for new bot messages
+            receiveSoundRef.current.play().catch(err => console.warn("Sound playback failed:", err));
+
             const messageElements = chatRef.current.querySelectorAll('[data-sender]');
             if (messageElements.length > 0) {
                 const lastElement = messageElements[messageElements.length - 1];
@@ -72,6 +92,9 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
     };
 
     const sendMessage = async (text) => {
+        // Play send sound when user sends a message
+
+
         const userId = localStorage.getItem('chat_user_id');
         const sessionId = sessionStorage.getItem('chat_session_id');
 
@@ -79,6 +102,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
         setIsProcessing(true);
 
         try {
+            sendSoundRef.current.play().catch(err => console.warn("Sound playback failed:", err));
             const response = await fetch("https://muliyachat.underdev.link/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -152,7 +176,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
                 {messages.map((message) => (
                     <Message key={message.id} message={message} />
                 ))}
-                {isProcessing && <TypingIndicator />} {/* Typing Indicator */}
+                {isProcessing && <TypingIndicator />}
             </div>
 
             {!isAtBottom && (

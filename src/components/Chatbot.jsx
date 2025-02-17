@@ -99,6 +99,8 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
         const sessionId = sessionStorage.getItem('chat_session_id');
 
         setMessages((prev) => [...prev, { id: crypto.randomUUID(), text, sender: "user" }]);
+
+
         setIsProcessing(true);
 
         try {
@@ -156,17 +158,17 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
         <div
             className={`fixed bottom-0 right-0 md:bottom-5 md:right-5 w-full h-full sm:w-[400px] sm:h-[550px] md:w-[600px] md:h-[550px] lg:w-[600px] lg:h-[550px] xl:w-[600px] xl:h-[550px] 2xl:w-[600px] 2xl:h-[550px] bg-secondary rounded-xl flex flex-col overflow-hidden ${className} ${isMobile ? 'mobile-chat' : ''}`}
         >
-            <div className="text-white bg-primary p-4 flex items-center justify-between rounded-br-xl rounded-bl-xl">
+            <div className="text-white px-6 bg-primary p-4 flex items-center justify-between rounded-br-xl rounded-bl-xl">
                 <div className="flex items-center space-x-2">
                     <img
-                        className="w-16"
-                        src="../assets/images/images.jpg"
+                        className="w-14"
+                        src="../assets/images/images.jpeg"
                         alt="Chatbot Logo"
                     />
                 </div>
                 <button
                     onClick={closeChat}
-                    className="text-white text-xl"
+                    className="text-white text-lg font-thin"
                 >
                     <FaTimes />
                 </button>

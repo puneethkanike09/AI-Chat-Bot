@@ -106,6 +106,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
         try {
             sendSoundRef.current.play().catch(err => console.warn("Sound playback failed:", err));
             const response = await fetch("https://muliyachat.underdev.link/chat", {
+                // const response = await fetch("http://0.0.0.0:8000/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: text, user_id: userId, session_id: sessionId }),

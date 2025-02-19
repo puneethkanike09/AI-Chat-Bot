@@ -28,7 +28,6 @@ export const facts = [
     "Amazing fact: Gold has been discovered on every continent on Earth.",
     "Interesting: Diamonds are billions of years old, some even dating back to the formation of Earth.",
     "Did you know? Gold is used in some medical treatments, such as rheumatoid arthritis.",
-    "Fun fact: The largest diamond heist in history was the Antwerp diamond heist in 2003.",
     "Amazing fact: Gold is chemically inert and does not tarnish or corrode.",
     "Interesting: Diamonds are often used in high-pressure experiments due to their strength.",
     "Did you know? The Olympic gold medals are actually made mostly of silver with a gold coating.",

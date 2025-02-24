@@ -5,6 +5,9 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 import Modal from 'react-modal';
 
+
+
+
 const Message = ({ message, onSendMessage }) => {
     const isBot = message.sender === "bot";
     const [expandedProducts, setExpandedProducts] = useState(false);

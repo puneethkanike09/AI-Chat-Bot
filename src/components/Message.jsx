@@ -6,28 +6,27 @@ import Modal from 'react-modal';
 
 const Message = ({ message }) => {
     const isBot = message.sender === "bot";
-    const [imageLoaded, setImageLoaded] = useState(false);
     const [expandedProducts, setExpandedProducts] = useState(false);
     const [expandedPromotions, setExpandedPromotions] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalImage, setModalImage] = useState("");
+    const [failedImages, setFailedImages] = useState([]);
 
-    const handleImageLoad = () => {
-        setImageLoaded(true);
+    const handleImageLoad = (src) => {
+        setFailedImages((prev) => prev.filter((img) => img !== src));
+    };
+
+    const handleImageError = (src) => {
+        setFailedImages((prev) => [...prev, src]);
     };
 
     const openModal = (src) => {
-        if (src) {
-            setModalImage(src);
-            setModalIsOpen(true);
-        } else {
-            console.error("Image source is invalid or does not exist.");
-            setModalImage(null);
-            setModalIsOpen(true);
+        if (!src || failedImages.includes(src)) {
+            return;
         }
+        setModalImage(src);
+        setModalIsOpen(true);
     };
-
-
 
     const closeModal = () => {
         setModalIsOpen(false);
@@ -37,35 +36,44 @@ const Message = ({ message }) => {
     const renderers = {
         p: ({ children }) => <p className="mb-2">{children}</p>,
         strong: ({ children }) => (
-            <strong className="font-bold mt-8">{children}</strong>
+            <strong className="font-bold">{children}</strong>
         ),
-        img: ({ alt, src }) => (
-            <img
-                src={src}
-                alt={alt}
-                className="max-w-[100px] h-auto my-2 rounded-lg border cursor-pointer md:max-w-[100px]"
-                onClick={() => openModal(src)}
-                onLoad={handleImageLoad}
-            />
-        ),
-        a: ({ href, children }) => {
-            if (href.startsWith("https://")) {
-                return (
-                    <a href={href} target="_blank" rel="noopener noreferrer">
-                        <img
-                            src={href}
-                            alt={children}
-                            className="max-w-[100px] h-auto my-2 rounded-lg border cursor-pointer md:max-w-[100px]"
-                            onClick={() => openModal(href)}
-                            onLoad={handleImageLoad}
-                        />
-                    </a>
-                );
+        img: ({ alt, src }) => {
+            if (failedImages.includes(src)) {
+                return null;
             }
-            return <a href={href}>{children}</a>;
+            return (
+                <img
+                    src={src}
+                    alt={alt}
+                    className="image1 max-w-[100px] h-auto my-2 rounded-lg border cursor-pointer md:max-w-[100px]"
+                    onClick={() => openModal(src)}
+                    // onLoad={() => handleImageLoad(src)}
+                    onError={() => handleImageError(src)}
+                />
+            );
         },
+        // a: ({ href, children }) => {
+        //     if (href.startsWith("https://")) {
+        //         return (
+        //             <a href={href} target="_blank" rel="noopener noreferrer">
+        //                 <img
+        //                     src={href}
+        //                     alt={children}
+        //                     className="image1 max-w-[100px] h-auto my-2 rounded-lg border cursor-pointer md:max-w-[100px]"
+        //                     onClick={() => openModal(href)}
+        //                     onLoad={() => handleImageLoad(href)}
+        //                     onError={() => handleImageError(href)}
+        //                 />
+        //             </a>
+        //         );
+        //     }
+        //     return <a href={href}>{children}</a>;
+        // },
+        br: () => <br />,
+        ol: ({ children }) => <ol className="list-decimal list-inside">{children}</ol>,
+        li: ({ children }) => <li className="mb-1">{children}</li>,
     };
-
 
     return (
         <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`}>
@@ -75,7 +83,7 @@ const Message = ({ message }) => {
                     : "bg-stone-50 text-[#AF1614] rounded-bl-3xl rounded-tl-3xl rounded-br-3xl"
                     }`}
             >
-                <ReactMarkdown components={renderers}>
+                <ReactMarkdown breaks components={renderers}>
                     {message.text}
                 </ReactMarkdown>
 
@@ -151,16 +159,15 @@ const Message = ({ message }) => {
                         src={modalImage}
                         alt="Modal"
                         className="modal-image"
-                        onLoad={() => setImageLoaded(true)}
-                        onError={() => setModalImage(null)}
+                        onLoad={() => handleImageLoad(modalImage)}
+                        onError={() => handleImageError(modalImage)}
                     />
                 ) : (
                     <div className="modal-placeholder">
-                        {imageLoaded ? "Failed to load image." : "Loading image..."}
+                        {failedImages.includes(modalImage) ? "Failed to load image." : "Loading image..."}
                     </div>
                 )}
             </Modal>
-
         </div>
     );
 };

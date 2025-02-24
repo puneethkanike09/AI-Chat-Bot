@@ -13,6 +13,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
     const prevMessagesLengthRef = useRef(messages.length);
     const [isAtBottom, setIsAtBottom] = useState(true);
     const [isMobile, setIsMobile] = useState(false);
+    const [shouldFocus, setShouldFocus] = useState(false);
 
     // Initialize sound settings
     useEffect(() => {
@@ -92,21 +93,16 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
     };
 
     const sendMessage = async (text) => {
-        // Play send sound when user sends a message
-
-
         const userId = localStorage.getItem('chat_user_id');
         const sessionId = sessionStorage.getItem('chat_session_id');
 
         setMessages((prev) => [...prev, { id: crypto.randomUUID(), text, sender: "user" }]);
-
-
         setIsProcessing(true);
+        setShouldFocus(false);
 
         try {
             sendSoundRef.current.play().catch(err => console.warn("Sound playback failed:", err));
             const response = await fetch("https://muliyachat.underdev.link/chat", {
-                // const response = await fetch("http://0.0.0.0:8000/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: text, user_id: userId, session_id: sessionId }),
@@ -145,7 +141,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
             setMessages((prev) => [...prev, errorMessage]);
         } finally {
             setIsProcessing(false);
-            document.querySelector('input[type="text"]').focus();
+            setShouldFocus(true);
         }
     };
 
@@ -192,7 +188,12 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
             )}
 
             <div className="shadow-lg">
-                <InputBox inputRef={inputRef} onSendMessage={sendMessage} isDisabled={isProcessing} />
+                <InputBox
+                    inputRef={inputRef}
+                    onSendMessage={sendMessage}
+                    isDisabled={isProcessing}
+                    shouldFocus={shouldFocus}
+                />
             </div>
         </div>
     );

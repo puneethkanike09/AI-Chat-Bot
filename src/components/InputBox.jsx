@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { IoSend } from "react-icons/io5";
 
-const InputBox = ({ onSendMessage, isDisabled, inputRef }) => {
+const InputBox = ({ onSendMessage, isDisabled, inputRef, shouldFocus }) => {
     const [input, setInput] = useState("");
     const maxLength = 200;
+
+    useEffect(() => {
+        if (!isDisabled && shouldFocus && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isDisabled, shouldFocus, inputRef]);
 
     const handleSend = (e) => {
         e.preventDefault();
@@ -44,8 +50,7 @@ const InputBox = ({ onSendMessage, isDisabled, inputRef }) => {
                 </div>
                 <button
                     type="submit"
-                    className={`flex items-center justify-center px-4 py-2 text-secondary text-base rounded-md transition-all duration-300 ${isDisabled ? "bg-primary cursor-not-allowed" : "bg-primary"
-                        }`}
+                    className="flex items-center justify-center px-4 py-2 text-secondary text-base rounded-md transition-all duration-300 bg-primary"
                     disabled={isDisabled}
                 >
                     <IoSend size={20} />
@@ -59,6 +64,11 @@ InputBox.propTypes = {
     onSendMessage: PropTypes.func.isRequired,
     isDisabled: PropTypes.bool.isRequired,
     inputRef: PropTypes.object.isRequired,
+    shouldFocus: PropTypes.bool,
+};
+
+InputBox.defaultProps = {
+    shouldFocus: false,
 };
 
 export default InputBox;

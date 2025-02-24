@@ -8,7 +8,7 @@ html {
 }
 
 
-
+.foo {white-space: 'pre-wrap';}
 
 * {
   font-family: "Ubuntu", serif;
@@ -283,6 +283,15 @@ img.h-auto.my-2.rounded-lg.border.cursor-pointer {
 }
 
 img.h-auto.my-2.rounded-lg.border.cursor-pointer:hover {
-  transform: scale(1.03); /* Scale up slightly on hover */
+  transform: scale(1.1); /* Scale up slightly on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image1{
+  max-width: 100px; /* Smaller image size */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.image1:hover{
+  transform: scale(1.1); /* Scale up slightly on hover */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

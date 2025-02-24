@@ -24,26 +24,27 @@ const TypingIndicator = () => {
                 setShowFact(!showFact);
                 setIsTransitioning(false);
             }, 300);
-        }, 8000);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="flex flex-col h-24">
-            {/* Message container with fixed height */}
-            <div className="h-16 overflow-hidden">
+        <div className="flex flex-col space-y-2">
+            {/* Message container with dynamic height */}
+            <div className="max-w-md">
                 <div
-                    className={`text-sm text-gray-600 max-w-md transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 transform -translate-y-2' : 'opacity-100 transform translate-y-0'
+                    className={`text-sm text-gray-600 transition-all duration-300 ease-in-out ${isTransitioning
+                        ? 'opacity-0 transform -translate-y-2'
+                        : 'opacity-100 transform translate-y-0'
                         }`}
                 >
                     {currentMessage}
                 </div>
             </div>
 
-            {/* Container to align typing indicator */}
+            {/* Typing indicator */}
             <div className="flex">
-                {/* Typing indicator with width-fitting background */}
                 <div className="inline-flex items-center space-x-1 p-2 text-sm bg-white rounded-br-3xl rounded-bl-3xl rounded-tr-3xl w-fit">
                     <div className="w-2 h-2 bg-primary rounded-full bounce-1"></div>
                     <div className="w-2 h-2 bg-primary rounded-full bounce-2"></div>

@@ -77,7 +77,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
             if (messageElements.length > 0) {
                 const lastElement = messageElements[messageElements.length - 1];
                 if (lastElement.dataset.sender === "bot") {
-                    lastElement.scrollIntoView({ block: "start", behavior: "smooth" });
+                    lastElement.scrollIntoView({ block: "start", behavior: "auto" });
                     inputRef.current?.focus();
                 }
             }
@@ -173,7 +173,7 @@ const Chatbot = ({ className = "chat-window", messages, setMessages, isProcessin
 
             <div ref={chatRef} className="flex-grow overflow-y-auto p-4 space-y-2 custom-scrollbar">
                 {messages.map((message) => (
-                    <Message key={message.id} message={message} />
+                    <Message key={message.id} message={message} onSendMessage={sendMessage} />
                 ))}
                 {isProcessing && <TypingIndicator />}
             </div>

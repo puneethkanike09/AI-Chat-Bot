@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import ReactMarkdown from "react-markdown";
+// import remarkBreaks from "remark-breaks";
 import { useState } from "react";
 import { FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 import Modal from 'react-modal';
 
-const Message = ({ message }) => {
+const Message = ({ message, onSendMessage }) => {
     const isBot = message.sender === "bot";
     const [expandedProducts, setExpandedProducts] = useState(false);
     const [expandedPromotions, setExpandedPromotions] = useState(false);
@@ -33,43 +34,30 @@ const Message = ({ message }) => {
         setModalImage("");
     };
 
+    const encodeImageUrl = (url) => {
+        return encodeURI(url);
+    };
+
     const renderers = {
         p: ({ children }) => <p className="mb-2">{children}</p>,
         strong: ({ children }) => (
             <strong className="font-bold">{children}</strong>
         ),
         img: ({ alt, src }) => {
-            if (failedImages.includes(src)) {
+            const encodedSrc = encodeImageUrl(src);
+            if (failedImages.includes(encodedSrc)) {
                 return null;
             }
             return (
                 <img
-                    src={src}
+                    src={encodedSrc}
                     alt={alt}
                     className="image1 max-w-[100px] h-auto my-2 rounded-lg border cursor-pointer md:max-w-[100px]"
-                    onClick={() => openModal(src)}
-                    // onLoad={() => handleImageLoad(src)}
-                    onError={() => handleImageError(src)}
+                    onClick={() => openModal(encodedSrc)}
+                    onError={() => handleImageError(encodedSrc)}
                 />
             );
         },
-        // a: ({ href, children }) => {
-        //     if (href.startsWith("https://")) {
-        //         return (
-        //             <a href={href} target="_blank" rel="noopener noreferrer">
-        //                 <img
-        //                     src={href}
-        //                     alt={children}
-        //                     className="image1 max-w-[100px] h-auto my-2 rounded-lg border cursor-pointer md:max-w-[100px]"
-        //                     onClick={() => openModal(href)}
-        //                     onLoad={() => handleImageLoad(href)}
-        //                     onError={() => handleImageError(href)}
-        //                 />
-        //             </a>
-        //         );
-        //     }
-        //     return <a href={href}>{children}</a>;
-        // },
         br: () => <br />,
         ol: ({ children }) => <ol className="list-decimal list-inside">{children}</ol>,
         li: ({ children }) => <li className="mb-1">{children}</li>,
@@ -77,6 +65,13 @@ const Message = ({ message }) => {
 
     return (
         <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`}>
+            {isBot && (
+                <img
+                    src="https://muliya.in/wp-content/uploads/2020/01/Muliya-Jewels-Favicon.png"
+                    alt="Muliya Icon"
+                    className="w-6 h-6 rounded-full mr-1"
+                />
+            )}
             <div
                 className={`px-5 py-3 max-w-[75%] text-sm ${isBot
                     ? "bg-stone-50 text-black rounded-br-3xl rounded-bl-3xl rounded-tr-3xl"
@@ -102,12 +97,18 @@ const Message = ({ message }) => {
                                     <div
                                         key={product.id}
                                         className="relative min-w-[150px] h-[200px] rounded-md overflow-hidden bg-cover bg-center"
-                                        style={{ backgroundImage: `url(${product.photo})` }}
+                                        style={{ backgroundImage: `url(${encodeImageUrl(product.photo)})` }}
                                     >
-                                        <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 p-2 rounded-md">
+                                        <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 p-2 rounded-md">
                                             <p className="text-white text-xs text-center">
                                                 Weight: {product.ntWeight}g
                                             </p>
+                                            <button
+                                                onClick={() => onSendMessage(`Can you provide more details about the product "${product.name}" with weight ${product.ntWeight}g?`)}
+                                                className="mt-2 border border-white-100 text-white px-2 py-1 rounded transition-colors duration-300 hover:bg-white hover:text-black"
+                                            >
+                                                More Details
+                                            </button>
                                         </div>
                                     </div>
                                 ))}
@@ -180,6 +181,7 @@ Message.propTypes = {
         suggested_products: PropTypes.array,
         promotions: PropTypes.array,
     }).isRequired,
+    onSendMessage: PropTypes.func.isRequired,
 };
 
 export default Message;

@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import ReactMarkdown from "react-markdown";
 // import remarkBreaks from "remark-breaks";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
 import Modal from 'react-modal';
 
 
@@ -15,6 +16,31 @@ const Message = ({ message, onSendMessage }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalImage, setModalImage] = useState("");
     const [failedImages, setFailedImages] = useState([]);
+    const [whatsappUrl, setWhatsappUrl] = useState(null);
+    const [processedText, setProcessedText] = useState(message.text);
+
+    // Process message text and detect WhatsApp URL
+    useEffect(() => {
+        if (message.text && message.text.includes("https://api.whatsapp.com/")) {
+            // Extract the WhatsApp URL from the message
+            const urlMatch = message.text.match(/https:\/\/api\.whatsapp\.com\/[^\s]+/);
+            if (urlMatch) {
+                setWhatsappUrl(urlMatch[0]);
+                // Remove the WhatsApp URL and any text like "Please click here to connect via WhatsApp:"
+                const cleanedText = message.text
+                    .replace(/Please click here to connect via WhatsApp:?\s*/i, '')
+                    .replace(/click here to connect via WhatsApp:?\s*/i, '')
+                    .replace(/connect via WhatsApp:?\s*/i, '')
+                    .replace(urlMatch[0], '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                setProcessedText(cleanedText);
+            }
+        } else {
+            setWhatsappUrl(null);
+            setProcessedText(message.text);
+        }
+    }, [message.text]);
 
     const handleImageLoad = (src) => {
         setFailedImages((prev) => prev.filter((img) => img !== src));
@@ -39,6 +65,12 @@ const Message = ({ message, onSendMessage }) => {
 
     const encodeImageUrl = (url) => {
         return encodeURI(url);
+    };
+
+    const handleWhatsAppClick = () => {
+        if (whatsappUrl) {
+            window.open(whatsappUrl, '_blank');
+        }
     };
 
     const renderers = {
@@ -82,8 +114,21 @@ const Message = ({ message, onSendMessage }) => {
                     }`}
             >
                 <ReactMarkdown breaks components={renderers}>
-                    {message.text}
+                    {processedText}
                 </ReactMarkdown>
+
+                {/* WhatsApp Button */}
+                {whatsappUrl && (
+                    <div className="mt-3">
+                        <button
+                            onClick={handleWhatsAppClick}
+                            className="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white px-4 py-3 rounded-xl hover:bg-[#128C7E] transition-all duration-300 shadow-md hover:shadow-lg"
+                        >
+                            <FaWhatsapp className="text-xl" />
+                            <span className="font-medium">Connect with Expert on WhatsApp</span>
+                        </button>
+                    </div>
+                )}
 
                 {isBot && message.suggested_products?.length > 0 && (
                     <div className="mt-4">

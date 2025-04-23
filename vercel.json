@@ -1,8 +1,8 @@
-  {
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/"
-      }
-    ]
-  }
+{
+  "rewrites": [
+    {
+      "source": "/chat",
+      "destination": "http://95.111.240.120:85/chat"
+    }
+  ]
+}

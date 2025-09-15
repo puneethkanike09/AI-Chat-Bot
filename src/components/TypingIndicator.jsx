@@ -46,11 +46,6 @@ const TypingIndicator = () => {
 
             {/* Typing indicator */}
             <div className="flex">
-                <img
-                    src="https://muliya.in/wp-content/uploads/2020/01/Muliya-Jewels-Favicon.png"
-                    alt="Muliya Icon"
-                    className="w-6 h-6 rounded-full mr-1"
-                />
                 <div className="inline-flex items-center space-x-1 p-2 text-sm bg-white rounded-br-3xl rounded-bl-3xl rounded-tr-3xl w-fit">
                     <div className="w-2 h-2 bg-primary rounded-full bounce-1"></div>
                     <div className="w-2 h-2 bg-primary rounded-full bounce-2"></div>

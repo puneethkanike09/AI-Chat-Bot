@@ -100,13 +100,6 @@ const Message = ({ message, onSendMessage }) => {
 
     return (
         <div className={`flex ${isBot ? "justify-start" : "justify-end"} mb-2`}>
-            {isBot && (
-                <img
-                    src="https://muliya.in/wp-content/uploads/2020/01/Muliya-Jewels-Favicon.png"
-                    alt="Muliya Icon"
-                    className="w-6 h-6 rounded-full mr-1"
-                />
-            )}
             <div
                 className={`px-5 py-3 max-w-[75%] text-sm ${isBot
                     ? "bg-stone-50 text-black rounded-br-3xl rounded-bl-3xl rounded-tr-3xl"

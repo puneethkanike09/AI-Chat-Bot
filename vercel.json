@@ -3,6 +3,10 @@
     {
       "source": "/chat",
       "destination": "http://95.111.240.120:85/chat"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

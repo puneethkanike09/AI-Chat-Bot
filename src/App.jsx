@@ -50,38 +50,39 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/agent/escalation/:id" element={<EscalationPage />} />
-        {/* Add other routes as needed */}
-      </Routes>
-      <div>
-        <HomeSkeleton />
-        {!isChatOpen && (
-          <>
-            <button
-              className={`chat-button fixed bottom-5 z-10 right-5 bg-primary text-secondary rounded-full focus:outline-none transition-all duration-500 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 sm:w-14 sm:h-14`}
-              onClick={openChat}
-              aria-label="Open Chat"
-            >
-              <span className="chat-button-icon block">
-                <MdMessage className="md:text-2xl sm:text-xl text-xl" />
-              </span>
-            </button>
-          </>
-        )}
+        <Route path="*" element={
+          <div>
+            <HomeSkeleton />
+            {!isChatOpen && (
+              <>
+                <button
+                  className={`chat-button fixed bottom-5 z-10 right-5 bg-primary text-secondary rounded-full focus:outline-none transition-all duration-500 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 sm:w-14 sm:h-14`}
+                  onClick={openChat}
+                  aria-label="Open Chat"
+                >
+                  <span className="chat-button-icon block">
+                    <MdMessage className="md:text-2xl sm:text-xl text-xl" />
+                  </span>
+                </button>
+              </>
+            )}
 
-        <div>
-          {(isChatOpen || isClosing) && (
-            <Chatbot
-              className={isClosing ? "chat-window closing" : "chat-window"}
-              messages={messages}
-              setMessages={setMessages}
-              isProcessing={isProcessing}
-              setIsProcessing={setIsProcessing}
-              setIsChatOpen={setIsChatOpen}
-              setIsClosing={setIsClosing}
-            />
-          )}
-        </div>
-      </div>
+            <div>
+              {(isChatOpen || isClosing) && (
+                <Chatbot
+                  className={isClosing ? "chat-window closing" : "chat-window"}
+                  messages={messages}
+                  setMessages={setMessages}
+                  isProcessing={isProcessing}
+                  setIsProcessing={setIsProcessing}
+                  setIsChatOpen={setIsChatOpen}
+                  setIsClosing={setIsClosing}
+                />
+              )}
+            </div>
+          </div>
+        } />
+      </Routes>
     </Router>
   );
 };
